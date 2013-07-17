@@ -11,7 +11,17 @@ public class Scaffold {
 		this.name = n;
 		this.scaffoldContigs = new ArrayList<ScaffoldContig>();
 	}
-	
+		
+	public String getName() {
+		return name;
+	}
+
+	public ArrayList<ScaffoldContig> getScaffoldContigs() {
+		return scaffoldContigs;
+	}
+
+
+
 	public void addScaffoldContig(ScaffoldContig sctg) {
 		this.scaffoldContigs.add(sctg);
 	}
