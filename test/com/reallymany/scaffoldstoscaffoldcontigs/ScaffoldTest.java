@@ -3,9 +3,7 @@ package com.reallymany.scaffoldstoscaffoldcontigs;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 public class ScaffoldTest {
 	Scaffold testScaffold;

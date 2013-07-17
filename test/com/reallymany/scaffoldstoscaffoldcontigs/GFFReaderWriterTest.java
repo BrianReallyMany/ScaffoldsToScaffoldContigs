@@ -22,9 +22,7 @@ public class GFFReaderWriterTest {
 	@Test
 	public void testGFFReaderWriter() {
 		assertTrue(testReaderWriter instanceof GFFReaderWriter);
-	}
-	
-	
+	}	
 	
 	@Test
 	public void testProcessInput() {

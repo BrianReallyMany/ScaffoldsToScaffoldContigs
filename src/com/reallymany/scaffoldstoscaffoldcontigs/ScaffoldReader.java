@@ -16,8 +16,6 @@ public class ScaffoldReader {
 	}
 	
 	public ArrayList<Scaffold> readScaffoldFile(String filename) {
-		// do stuff
-		// TODO
 		try {
 			CSVReader reader = new CSVReader(new FileReader(filename), '\t');
 			String[] nextLine;
@@ -25,12 +23,13 @@ public class ScaffoldReader {
 				updateAllScaffolds(nextLine[0], Integer.parseInt(nextLine[1]),
 						Integer.parseInt(nextLine[2]), nextLine[5]);
 			}
+			reader.close();
 			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Input file " + filename + " not found");
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println("IOException. Sorry, that's all I know.");
 			e.printStackTrace();
 		}
 		
