@@ -36,5 +36,18 @@ public class ScaffoldReaderTest {
 		assertEquals(sampleScaffolds.get(1).getScaffoldContigs().size(), 5);
 		assertEquals(sampleScaffolds.get(1).getScaffoldContigs().get(2).getName(), "sctg_0002_0002");
 	}
+	
+	/*
+	// This test takes a minute, so it's commented out ... but it passed last time I ran it :)
+	 
+	@Test
+	public void testReadScaffoldFileOnActualInput() throws ScaffoldContigException {
+		setUp();
+		ArrayList<Scaffold> lotsOfScaffolds;
+		lotsOfScaffolds = testSR.readScaffoldFile("/home/brian/Documents/old_uploads/bdor_genome_WGS/454Scaffolds.txt");
+		assertEquals(lotsOfScaffolds.size(), 7166);
+		assertEquals(lotsOfScaffolds.get(lotsOfScaffolds.size()-1).getScaffoldContigs().size(), 3);
+	}
+	*/
 
 }
