@@ -4,3 +4,7 @@
 *.jar
 *.war
 *.ear
+
+# Input and output files for testing, etc #
+big_files
+big_files/*
