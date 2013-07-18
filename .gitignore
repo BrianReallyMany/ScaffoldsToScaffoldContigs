@@ -8,3 +8,9 @@
 # Input and output files for testing, etc #
 big_files
 big_files/*
+
+# Eclipse stuff #
+.project
+.classpath
+.settings
+.settings/*
