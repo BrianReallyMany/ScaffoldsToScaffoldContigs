@@ -15,8 +15,8 @@ public class GFFReaderWriterTest {
 	
 	@Before
 	public void setUp() {
-		testScaffolds = testScaffoldReader.readScaffoldFile("sample.txt");
-		testReaderWriter = new GFFReaderWriter("sample.gff", "sampleOut.gff", testScaffolds);
+		testScaffolds = testScaffoldReader.readScaffoldFile("test_files/sample.txt");
+		testReaderWriter = new GFFReaderWriter("test_files/sample.gff", "test_files/sampleOut", testScaffolds);
 	}
 
 	@Test
@@ -27,7 +27,7 @@ public class GFFReaderWriterTest {
 	@Test
 	public void testProcessInput() {
 		testReaderWriter.processInput();
-		File theOutput = new File("sampleOut.gff");
+		File theOutput = new File("test_files/sampleOut.gff");
 		assertTrue(theOutput.isFile());
 	}
 	

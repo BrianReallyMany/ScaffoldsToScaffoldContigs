@@ -24,7 +24,7 @@ public class ScaffoldReaderTest {
 	public void testReadScaffoldFile() throws ScaffoldContigException {
 		setUp();
 		ArrayList<Scaffold> sampleScaffolds;
-		sampleScaffolds = testSR.readScaffoldFile("sample.txt");
+		sampleScaffolds = testSR.readScaffoldFile("test_files/sample.txt");
 		assertTrue(sampleScaffolds.size() != 0);
 		assertTrue(sampleScaffolds.size() == 2);
 		assertTrue(sampleScaffolds.get(0) instanceof Scaffold);
