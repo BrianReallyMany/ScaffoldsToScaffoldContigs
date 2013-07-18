@@ -13,13 +13,15 @@ import au.com.bytecode.opencsv.CSVWriter;
 public class GFFReaderWriter {
 	CSVReader reader;
 	CSVWriter writer;
+	CSVWriter discardsWriter;
 	ArrayList<Scaffold> referenceScaffolds;
 	
 	public GFFReaderWriter(String in, String out, ArrayList<Scaffold> scaffolds) {
 		this.referenceScaffolds = scaffolds;
 		try {
 			reader = new CSVReader(new FileReader(in), '\t');
-			writer = new CSVWriter(new FileWriter(out), '\t');
+			writer = new CSVWriter(new FileWriter(out+".gff"), '\t', CSVWriter.NO_QUOTE_CHARACTER);
+			discardsWriter = new CSVWriter(new FileWriter(out+".discards.gff"), '\t', CSVWriter.NO_QUOTE_CHARACTER);
 		} catch (FileNotFoundException e) {
 			System.err.println("File not found!");
 			e.printStackTrace();
@@ -31,6 +33,8 @@ public class GFFReaderWriter {
 
 	// TODO omg refactor me plz
 	public void processInput() {
+		ArrayList<String[]> discards = new ArrayList<String[]>();
+		Boolean discardingChildren = false;
 		String scaffoldName;
 		Scaffold currentScaffold;
 		ScaffoldContig currentScaffoldContig;
@@ -42,6 +46,16 @@ public class GFFReaderWriter {
 				try {
 					// Ignore comments
 					if (thisLineIn[0].startsWith("#")) {
+						continue;
+					}
+					if (thisLineIn[2].equals("gene")) {
+						discardingChildren = false;
+					}
+					// Note! If this line is the child of a gene
+					// which spans two contigs, we write it to discards
+					// WITHOUT UPDATING THE INDICES b/c at the moment who cares?
+					if (discardingChildren) {
+						discards.add(thisLineIn);
 						continue;
 					}
 					nextLineOut = thisLineIn;
@@ -56,7 +70,9 @@ public class GFFReaderWriter {
 						nextLineOut[4] = Integer.toString(thisEnd - currentScaffoldContig.getBegin() + 1);
 						writer.writeNext(nextLineOut);
 					} else {
-						throw new ScaffoldContigException("Contig spans two scaffolds! Skipping this one.");
+						discards.add(nextLineOut);
+						discardingChildren = true;
+//						throw new ScaffoldContigException("Contig spans two scaffolds! Skipping this one.");
 					}					
 				} catch (ScaffoldContigException e) {
 					System.err.println("Error reading/writing scaffolds...");
@@ -64,7 +80,7 @@ public class GFFReaderWriter {
 				}				
 			}
 			reader.close();
-			writer.close();
+			writer.close();			
 		} catch (FileNotFoundException e) {
 			System.err.println("File not found");			
 			e.printStackTrace();
@@ -72,6 +88,14 @@ public class GFFReaderWriter {
 			System.err.println("IOException, sorry");
 			e.printStackTrace();
 		}		
+		// Write discards to file
+		discardsWriter.writeAll(discards);
+		try {
+			discardsWriter.close();
+		} catch (IOException e) {
+			System.out.println("IOException writing discards to file.");
+			e.printStackTrace();
+		}
 	}
 
 	public Scaffold findScaffoldByName(String scaffoldName) throws ScaffoldContigException {
@@ -83,8 +107,6 @@ public class GFFReaderWriter {
 			}
 		}
 		throw new ScaffoldContigException("no such scaffold");
-	}	
-	
-	
+	}		
 	
 }
