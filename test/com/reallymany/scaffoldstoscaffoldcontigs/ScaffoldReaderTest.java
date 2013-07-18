@@ -24,15 +24,15 @@ public class ScaffoldReaderTest {
 	public void testReadScaffoldFile() throws ScaffoldContigException {
 		setUp();
 		ArrayList<Scaffold> sampleScaffolds;
-		sampleScaffolds = testSR.readScaffoldFile("test_files/sample.txt");
+		sampleScaffolds = testSR.readScaffoldFile("sample_files/sample.agp");
 		assertTrue(sampleScaffolds.size() != 0);
 		assertTrue(sampleScaffolds.size() == 2);
 		assertTrue(sampleScaffolds.get(0) instanceof Scaffold);
 		assertTrue(sampleScaffolds.get(0).getScaffoldContigs().get(0) instanceof ScaffoldContig);
 		assertEquals(sampleScaffolds.get(0).getScaffoldContigs().get(0).getBegin(), 1);
-		assertEquals(sampleScaffolds.get(0).getScaffoldContigs().size(), 10);
-		assertEquals(sampleScaffolds.get(1).getScaffoldContigs().size(), 5);
-		assertEquals(sampleScaffolds.get(1).getScaffoldContigs().get(2).getName(), "sctg_0002_0002");
+		assertEquals(sampleScaffolds.get(0).getScaffoldContigs().size(), 5);
+		assertEquals(sampleScaffolds.get(1).getScaffoldContigs().size(), 3);
+		assertEquals(sampleScaffolds.get(1).getScaffoldContigs().get(2).getName(), "sctg_0002_0003");
 	}
 	
 	/*

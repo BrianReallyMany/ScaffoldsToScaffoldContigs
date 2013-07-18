@@ -20,8 +20,11 @@ public class ScaffoldReader {
 			CSVReader reader = new CSVReader(new FileReader(filename), '\t');
 			String[] nextLine;
 			while ((nextLine = reader.readNext()) != null) {
-				updateAllScaffolds(nextLine[0], Integer.parseInt(nextLine[1]),
-						Integer.parseInt(nextLine[2]), nextLine[5]);
+				if (nextLine[5].startsWith("sctg")) {
+					updateAllScaffolds(nextLine[0], Integer.parseInt(nextLine[1]),
+							Integer.parseInt(nextLine[2]), nextLine[5]);
+				}
+				
 			}
 			reader.close();
 			

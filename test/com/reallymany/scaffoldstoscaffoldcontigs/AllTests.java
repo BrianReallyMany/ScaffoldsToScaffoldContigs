@@ -6,7 +6,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({ ScaffoldContigTest.class, ScaffoldTest.class, ScaffoldReaderTest.class, 
-	GFFReaderWriterTest.class })
+	GFFReaderWriterTest.class, GeneTest.class, UnsortedGFFDetectorTest.class })
 public class AllTests {
 
 }
