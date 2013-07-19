@@ -52,7 +52,6 @@ public class GFFReader extends CSVReader {
 		
 		nextScaffoldArray.add(nextLine);
 		while ((nextLine = this.readNext()) != null) {
-			System.out.println(nextLine[0]);
 			if (!nextLine[0].equals(currentScaffoldName)) {
 				currentScaffoldName = nextLine[0];
 				return nextScaffoldArray;

@@ -1,0 +1,9 @@
+scaffold00007	maker	gene	17107	17227	.	-	.	ID=175541;Name=BDOR_000003
+scaffold00007	maker	mRNA	17107	17227	.	-	.	ID=175542;Name=BDOR_000003-RA;Parent=175541
+scaffold00007	maker	exon	17210	17227	0.94	-	.	ID=175543;Name=BDOR_000003-RA:exon:0;Parent=175542
+scaffold00007	maker	exon	17197	17204	0.94	-	.	ID=175544;Name=BDOR_000003-RA:exon:1;Parent=175542
+scaffold00007	maker	exon	17116	17142	0.94	-	.	ID=175545;Name=BDOR_000003-RA:exon:2;Parent=175542
+scaffold00001	maker	exon	17107	17110	0.94	-	.	ID=175546;Name=BDOR_000003-RA:exon:3;Parent=175542
+scaffold00001	maker	three_prime_UTR	17219	17227	.	-	.	ID=175547;Name=BDOR_000003-RA:UTR2;Parent=175542
+scaffold00001	maker	CDS	17210	17219	.	-	0	ID=175548;Name=BDOR_000003-RA:cds:0;Parent=175542
+scaffold00001	maker	CDS	17197	17204	.	-	0	ID=175549;Name=BDOR_000003-RA:cds:1;Parent=175542

@@ -12,7 +12,7 @@ public class ScaffoldsToScaffoldContigs {
 			System.out.println("Usage: ScaffoldToScaffoldContigs <agp_file> <sorted_gff_file> <output_file_prefix>");			
 		} else {
 			// Make sure GFF is sorted
-			UnsortedGFFDetector detector = new UnsortedGFFDetector(args[1]);
+			GFFVerifier detector = new GFFVerifier(args[1]);
 			if (!detector.verifyFile()) {
 				System.out.println("GFF file not sorted by scaffold; please sort and try again.");
 				return;				
