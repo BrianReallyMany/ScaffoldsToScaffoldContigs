@@ -44,6 +44,7 @@ public class GFFReaderWriter {
 		try {						
 			while ((thisLineIn = reader.readNext()) != null) {				
 				try {
+					
 					// Ignore comments
 					if (thisLineIn[0].startsWith("#")) {
 						continue;

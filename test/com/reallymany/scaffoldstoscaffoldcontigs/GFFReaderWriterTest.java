@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class GFFReaderWriterTest {
-	ScaffoldReader testScaffoldReader = new ScaffoldReader();
+	AGPReader testScaffoldReader = new AGPReader();
 	GFFReaderWriter testReaderWriter;
 	ArrayList<Scaffold> testScaffolds;
 	

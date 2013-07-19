@@ -5,8 +5,8 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ ScaffoldContigTest.class, ScaffoldTest.class, ScaffoldReaderTest.class, 
-	GFFReaderWriterTest.class, GeneTest.class, UnsortedGFFDetectorTest.class })
+@SuiteClasses({ ScaffoldContigTest.class, ScaffoldTest.class, AGPReaderTest.class, 
+	GFFReaderWriterTest.class, GeneTest.class, UnsortedGFFDetectorTest.class, GFFReaderTest.class })
 public class AllTests {
 
 }

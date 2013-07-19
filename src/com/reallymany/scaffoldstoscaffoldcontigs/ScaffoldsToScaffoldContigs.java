@@ -21,7 +21,7 @@ public class ScaffoldsToScaffoldContigs {
 			System.out.println("Rewriting gff file: "+args[1]);
 			System.out.println("Output file: "+args[2]);
 			
-			ScaffoldReader sr = new ScaffoldReader();
+			AGPReader sr = new AGPReader();
 			GFFReaderWriter gffRW;
 			ArrayList<Scaffold> scaffolds;
 			
