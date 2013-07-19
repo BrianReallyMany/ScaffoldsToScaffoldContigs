@@ -11,7 +11,7 @@ public class GFFReader extends CSVReader {
 	Boolean atBeginningOfFile = true;
 	Boolean atEndOfFile = false;
 	String[] nextLine = null;
-	String nextGeneName;
+	String currentScaffoldName;
 	
 	public GFFReader(String filename) throws FileNotFoundException {
 		super(new FileReader(filename), '\t');
@@ -28,6 +28,7 @@ public class GFFReader extends CSVReader {
 			nextLine = this.readNext();	
 			atBeginningOfFile = false;
 		}
+		
 		nextGeneArray.add(nextLine);
 		while ((nextLine = this.readNext()) != null) {
 			if (nextLine[2].equals("gene")) {
@@ -40,35 +41,31 @@ public class GFFReader extends CSVReader {
 		return nextGeneArray;
 	}
 
+	
+	public ArrayList<String[]> readOneScaffold() throws IOException {
+		ArrayList<String[]> nextScaffoldArray = new ArrayList<String[]>();
+		if (atBeginningOfFile) {
+			nextLine = this.readNext();	
+			currentScaffoldName = nextLine[0];
+			atBeginningOfFile = false;
+		}
+		
+		nextScaffoldArray.add(nextLine);
+		while ((nextLine = this.readNext()) != null) {
+			System.out.println(nextLine[0]);
+			if (!nextLine[0].equals(currentScaffoldName)) {
+				currentScaffoldName = nextLine[0];
+				return nextScaffoldArray;
+			} else {
+				nextScaffoldArray.add(nextLine);
+			}
+		}		
+		atEndOfFile = true;
+		return nextScaffoldArray;
+	}
+
 	public Boolean getAtEndOfFile() {
 		return atEndOfFile;
 	}
-
-//	public ArrayList<String[]> getNextScaffold() {
-//	ArrayList<String[]> nextScaffoldArray = new ArrayList<String[]>();
-
-//		try {
-////			nextScaffold.add(this.readNext());
-//			while ((nextLine = this.readNext()) != null) {
-//				if (!nextLine[2].equals("gene")) {
-//					nextScaffold.add(nextLine);
-//				} else {
-//					return nextScaffold;
-//				}			
-//			}
-//		} catch (IOException e1) {
-//			System.err.println("IOException in GFFReader.readNext()");
-//			e1.printStackTrace();
-//		}
-//		
-//		try {
-//			this.close();
-//		} catch (IOException e) {
-//			System.err.println("IOException in GFFReader.close");
-// 			e.printStackTrace();
-//		}
-//		// TODO Auto-generated method stub
-//		return nextScaffold;
-//	}
 	
 }
