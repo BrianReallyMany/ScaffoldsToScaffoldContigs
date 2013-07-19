@@ -52,7 +52,7 @@ public class GFFReaderTest {
 	}
 	
 	@Test
-	public void testGetNextScaffold() throws IOException {
+	public void testReadOneScaffold() throws IOException {
 		setUp();
 		scaff = testGFFReader2.readOneScaffold();
 		assertFalse(scaff.isEmpty());
