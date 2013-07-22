@@ -17,6 +17,7 @@ public class ScaffoldsToScaffoldContigs {
 				System.out.println("GFF file not sorted by scaffold; please sort and try again.");
 				return;				
 			}
+			
 			System.out.println("Using agp file: "+args[0]);
 			System.out.println("Rewriting gff file: "+args[1]);
 			System.out.println("Output file: "+args[2]);
@@ -33,6 +34,8 @@ public class ScaffoldsToScaffoldContigs {
 	}
 }
 
-// TODO refactor GFFReaderWriter to use Gene class
-// TODO change verifyGFF to check only that no scaffolds are spread out (e.g. ten lines of scaffold80, two lines of scaffold200, then another line of scaffold80...
-// TODO mockup test files for all this
+// TODO make GFFReader.readNextGene() return Gene.
+// TODO give scaffolds indices
+// TODO write GeneProcessor (this is a big one)
+// TODO write GFFWriter (constructor takes filename, method writeGenes takes ArrayList<Gene>)
+// TODO consider using TreeSet for Scaffold.scaffoldContigs ?

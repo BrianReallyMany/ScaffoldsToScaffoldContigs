@@ -42,7 +42,6 @@ public class GFFVerifier {
 		
 		try {
 			while ((currentLine = reader.readNext()) != null) {
-				System.out.println("currentline[0]: "+currentLine[0]);
 				if (!currentLine[0].equals(previousScaffoldName)) {
 					if (forbiddenScaffolds.contains(currentLine[0])) {
 						isValidGFF = false;
@@ -55,7 +54,6 @@ public class GFFVerifier {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("about to return "+isValidGFF);		
 		return isValidGFF;
 	}
 	
