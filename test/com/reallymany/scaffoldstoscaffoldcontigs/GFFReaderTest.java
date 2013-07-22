@@ -15,7 +15,7 @@ import au.com.bytecode.opencsv.CSVReader;
 public class GFFReaderTest {
 	GFFReader testGFFReader1, testGFFReader2, testGFFReader3;
 	ArrayList<String[]> oneGene, twoGene, scaff, scaff2, scaff3;
-	Gene testGene1;
+	Gene testGene1, testGene2;
 
 	@Before
 	public void setUp() throws FileNotFoundException {
@@ -38,14 +38,14 @@ public class GFFReaderTest {
 		assertEquals("mRNA", testGFFReader1.readOneLine()[2]);		
 	}
 	
-//	@Test
-//	public void testReadOneGene() throws IOException {
-//		testGene1 = testGFFReader2.readOneGene();
-//		assertEquals(10, testGene1.getFeatures().size());
-//		twoGene = testGFFReader2.readOneGene();
-//		assertEquals(9, twoGene.size());
-//		assertEquals("2392", twoGene.get(3)[3]);
-//	}
+	@Test
+	public void testReadOneGene() throws IOException {
+		testGene1 = testGFFReader2.readOneGene();
+		assertEquals(10, testGene1.getFeatures().size());
+		testGene2 = testGFFReader2.readOneGene();
+		assertEquals(9, testGene2.getFeatures().size());
+		assertEquals("2392", testGene2.getFeatures().get(3)[3]);
+	}
 	
 	@Test
 	public void testReadOneScaffold() throws IOException {

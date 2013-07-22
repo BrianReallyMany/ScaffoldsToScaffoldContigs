@@ -22,23 +22,26 @@ public class GFFReader extends CSVReader {
 		return nextLine;
 	}
 	
-	public ArrayList<String[]> readOneGene() throws IOException {
-		ArrayList<String[]> nextGeneArray = new ArrayList<String[]>();
+	public Gene readOneGene() throws IOException {
+		Gene nextGene = new Gene();
+//		ArrayList<String[]> nextGeneArray = new ArrayList<String[]>();
 		if (atBeginningOfFile) {
 			nextLine = this.readNext();	
 			atBeginningOfFile = false;
 		}
 		
-		nextGeneArray.add(nextLine);
+		nextGene.addFeature(nextLine);
+//		nextGeneArray.add(nextLine);
 		while ((nextLine = this.readNext()) != null) {
 			if (nextLine[2].equals("gene")) {
-				return nextGeneArray;
+				return nextGene;
 			} else {
-				nextGeneArray.add(nextLine);
+				nextGene.addFeature(nextLine);
+//				nextGeneArray.add(nextLine);
 			}
 		}		
 		atEndOfFile = true;
-		return nextGeneArray;
+		return nextGene;
 	}
 
 	
