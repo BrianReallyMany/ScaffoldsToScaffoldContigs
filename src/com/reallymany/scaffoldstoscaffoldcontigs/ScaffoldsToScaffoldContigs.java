@@ -34,8 +34,6 @@ public class ScaffoldsToScaffoldContigs {
 	}
 }
 
-// TODO make GFFReader.readNextGene() return Gene.
-// TODO give scaffolds indices
 // TODO write GeneProcessor (this is a big one)
 // TODO write GFFWriter (constructor takes filename, method writeGenes takes ArrayList<Gene>)
 // TODO consider using TreeSet for Scaffold.scaffoldContigs ?
