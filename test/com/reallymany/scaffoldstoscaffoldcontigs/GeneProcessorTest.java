@@ -85,17 +85,4 @@ public class GeneProcessorTest {
 		assertTrue(testGP1.geneSpansMultipleContigs());
 		assertFalse(testGP2.geneSpansMultipleContigs());
 	}
-	
-	
-	
-	
-
 }
-
-
-/*
-testGene1 = new Gene();
-testChildren = new ArrayList<String[]>();
-testStringArray = "scaffold00080	maker	gene	106151	109853	.	+	.	ID=1;Name=BDOR_007864".split("\t");
-testChildren.add(testStringArray);
-*/

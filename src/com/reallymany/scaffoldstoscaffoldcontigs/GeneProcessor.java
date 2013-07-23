@@ -34,7 +34,6 @@ public class GeneProcessor {
 		ScaffoldContig startingSctg, endingSctg;
 		startingIndex = Integer.parseInt(feature[3]);
 		endingIndex = Integer.parseInt(feature[4]);
-		System.out.println(startingIndex);
 		startingSctg = currentScaffold.getScaffoldContig(startingIndex);
 		endingSctg = currentScaffold.getScaffoldContig(endingIndex);
 		if (startingSctg == endingSctg) {
