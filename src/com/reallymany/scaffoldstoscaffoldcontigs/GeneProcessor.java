@@ -9,10 +9,14 @@ public class GeneProcessor {
 	Scaffold currentScaffold;
 	ArrayList<Scaffold> allScaffolds;
 
-	public GeneProcessor(Gene inputGene, ArrayList<Scaffold> scaffolds) throws ScaffoldContigException {
-		geneBeingProcessed = inputGene;
+	public GeneProcessor(ArrayList<Scaffold> scaffolds) throws ScaffoldContigException {
 		genesToWrite = new ArrayList<Gene>();
 		allScaffolds = scaffolds;	
+	}
+	
+	// Sloppy placeholder fn for testing, to be absorbed by "processGene" soon as I start writing it...
+	public void passInGene(Gene inputGene) throws ScaffoldContigException {
+		geneBeingProcessed = inputGene;
 		currentScaffold = findCurrentScaffold();
 	}
 
@@ -25,7 +29,7 @@ public class GeneProcessor {
 					return thisScaffold;
 			}
 		}
-		throw new ScaffoldContigException("no such scaffold @ GeneProcessor.findCurrentScaffold");
+		throw new ScaffoldContigException("no such scaffold @ GeneProcessor.findCurrentScaffold()");
 	}
 	
 
@@ -47,5 +51,7 @@ public class GeneProcessor {
 	public boolean geneSpansMultipleContigs() throws ScaffoldContigException {
 		return featureSpansMultipleContigs(geneBeingProcessed.getFeatures().get(0));
 	}
+	
+	
 
 }

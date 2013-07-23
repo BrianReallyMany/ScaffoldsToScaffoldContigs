@@ -38,7 +38,9 @@ public class GeneProcessorTest {
 		testGene1 = new Gene(testFeatures);
 		
 		// Create a GeneProcessor
-		testGP1 = new GeneProcessor(testGene1, testScaffolds);
+		testGP1 = new GeneProcessor(testScaffolds);
+		testGP1.passInGene(testGene1);
+
 		
 		// Do it again for a Gene which doesn't span multiple contigs
 		testFeatures.clear();
@@ -51,7 +53,8 @@ public class GeneProcessorTest {
 		testStringArray = "scaffold00002	maker	CDS	24000	27000	.	+	.	ID=4;Name=BDOR_007864-RA;Parent=2".split("\t");
 		testFeatures.add(testStringArray);
 		testGene2 = new Gene(testFeatures);
-		testGP2 = new GeneProcessor(testGene2, testScaffolds);
+		testGP2 = new GeneProcessor(testScaffolds);
+		testGP2.passInGene(testGene2);
 	}
 	
 	
@@ -85,4 +88,7 @@ public class GeneProcessorTest {
 		assertTrue(testGP1.geneSpansMultipleContigs());
 		assertFalse(testGP2.geneSpansMultipleContigs());
 	}
+	
+	
+	
 }
