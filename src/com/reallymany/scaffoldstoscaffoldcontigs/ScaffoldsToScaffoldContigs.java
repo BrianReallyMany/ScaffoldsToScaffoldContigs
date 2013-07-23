@@ -35,5 +35,7 @@ public class ScaffoldsToScaffoldContigs {
 }
 
 // TODO write GeneProcessor (this is a big one)
+// TODO be more rigid about Gene.enclosingThings? like require at construction? maybe the
+// allScaffolds thing should be global ish after AGPReader generates it?
 // TODO write GFFWriter (constructor takes filename, method writeGenes takes ArrayList<Gene>)
 // TODO consider using TreeSet for Scaffold.scaffoldContigs ?
