@@ -34,11 +34,6 @@ public class ScaffoldsToScaffoldContigs {
 	}
 }
 
-// TODO should GeneProcessor only take allScaffolds for constructor and then take Genes
-// as arguments? in other words do we have a 1:1 Gene:GeneProcessor ratio or should it
-// be N:1 ?
 // TODO where does the Name=... field get updated? in Gene.split()?
-// TODO be more rigid about Gene.enclosingThings? like require at construction? maybe the
-// allScaffolds thing should be global ish after AGPReader generates it?
 // TODO write GFFWriter (constructor takes filename, method writeGenes takes ArrayList<Gene>)
 // TODO consider using TreeSet for Scaffold.scaffoldContigs ?

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Gene {
-	Scaffold enclosingScaffold;
 	ScaffoldContig enclosingScaffoldContig;	
 	ArrayList<String[]> features;
 	
@@ -17,17 +16,6 @@ public class Gene {
 		features = myChildren;
 	}	
 		
-	public Scaffold getEnclosingScaffold() throws ScaffoldContigException {
-		if (enclosingScaffold != null) {
-			return enclosingScaffold;
-		} else {
-			throw new ScaffoldContigException("Scaffold enclosingScaffold == null");
-		}
-	}
-
-	public void setEnclosingScaffold(Scaffold enclosingScaffold) {
-		this.enclosingScaffold = enclosingScaffold;
-	}
 
 	public ScaffoldContig getEnclosingScaffoldContig() throws ScaffoldContigException {
 		if (enclosingScaffoldContig != null) {

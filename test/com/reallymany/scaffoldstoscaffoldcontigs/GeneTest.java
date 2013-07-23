@@ -59,16 +59,10 @@ public class GeneTest {
 	public void testGeneGettersAndSetters() throws ScaffoldContigException {
 		setUp();
 		try {
-			testGene1.getEnclosingScaffold();
-			fail("Didn't throw exception!");
-		} catch (ScaffoldContigException e) {}
-		try {
 			testGene2.getEnclosingScaffoldContig();
 			fail("Didn't throw excpetion!");
 		} catch (ScaffoldContigException e) {}
 		
-		testGene1.setEnclosingScaffold(testScaffold);
-		assertEquals(testScaffold, testGene1.getEnclosingScaffold());
 		
 		testGene2.setEnclosingScaffoldContig(testSctg);
 		assertEquals(testSctg, testGene2.getEnclosingScaffoldContig());
@@ -99,6 +93,5 @@ public class GeneTest {
 		assertEquals("52", testGene2.getFeatures().get(0)[3]);
 		assertEquals("3754", testGene2.getFeatures().get(0)[4]);
 		assertEquals("717", testGene2.getFeatures().get(9)[3]);
-	}
-	
+	}	
 }
