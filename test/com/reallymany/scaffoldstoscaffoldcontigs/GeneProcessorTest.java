@@ -65,11 +65,24 @@ public class GeneProcessorTest {
 		assertEquals(testScaffolds, testGP1.allScaffolds);
 		assertEquals(testGene1, testGP1.geneBeingProcessed);
 		assertTrue(testGP1.genesToWrite instanceof ArrayList);
-		assertEquals(testScaffolds.get(0), testGP1.currentScaffold);
+		
 		
 		assertTrue(testGP2.geneBeingProcessed instanceof Gene);
 		assertEquals(testGene2, testGP2.geneBeingProcessed);
+	}
+		
+	
+	@Test
+	public void testFindCurrentScaffold() throws Exception {
+		setUp();
+		assertEquals(testScaffolds.get(0), testGP1.currentScaffold);
 		assertEquals(testScaffolds.get(1), testGP2.currentScaffold);
+	}
+	
+	@Test
+	public void testFindCurrentScaffoldContig() throws Exception {
+		setUp();
+		assertEquals("sctg_0002_0002", testGP2.findCurrentScaffoldContig().getName());
 	}
 	
 	@Test

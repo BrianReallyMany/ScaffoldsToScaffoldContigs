@@ -19,7 +19,23 @@ public class GeneProcessor {
 		geneBeingProcessed = inputGene;
 		currentScaffold = findCurrentScaffold();
 	}
-
+	
+	// public ArrayList<Gene> prepareGeneForWriting(Gene gene) {
+	// geneBeingProcessed = gene;
+	// genesToWrite.clear();
+	// currentScaffold = findCurrentScaffold();
+	// gene.setEnclosingScaffold(currentScaffold)    // necessary?
+	// if (!geneSpansMultipleContigs) {
+	//   gene.setEnclosingScaffoldContig(findCurrentScaffoldContig());
+	//   gene.scaffoldToSctg();
+	//   genesToWrite.add(gene);
+	//   return genesToWrite;
+	// else {
+	//   genesToWrite = gene.splitUp();
+	//   for gene in genesToWrite do gene.scaffoldToSctg()
+	//   return genesToWrite;	
+	
+	
 	private Scaffold findCurrentScaffold() throws ScaffoldContigException {
 		String scaffoldName = geneBeingProcessed.getFeatures().get(0)[0];
 		Iterator<Scaffold> scaffoldsIterator = allScaffolds.iterator();
@@ -44,12 +60,17 @@ public class GeneProcessor {
 			return false;
 		} else {
 			return true;
-		}
-		
+		}		
 	}
 
 	public boolean geneSpansMultipleContigs() throws ScaffoldContigException {
 		return featureSpansMultipleContigs(geneBeingProcessed.getFeatures().get(0));
+	}
+
+	// Assumes geneBeingProcessed does NOT span 2 or more contigs
+	public ScaffoldContig findCurrentScaffoldContig() throws ScaffoldContigException {
+		int geneStartingIndex = Integer.parseInt(geneBeingProcessed.getFeatures().get(0)[3]);
+		return currentScaffold.getScaffoldContig(geneStartingIndex);
 	}
 	
 	
