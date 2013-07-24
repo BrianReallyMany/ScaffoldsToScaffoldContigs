@@ -34,6 +34,7 @@ public class ScaffoldsToScaffoldContigs {
 	}
 }
 
+// TODO make methods that require a gene in GeneProcessor take it as argument?
 // TODO where does the Name=... field get updated? in Gene.split()?
 // TODO write GFFWriter (constructor takes filename, method writeGenes takes ArrayList<Gene>)
 // TODO consider using TreeSet for Scaffold.scaffoldContigs ?

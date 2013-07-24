@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class GeneProcessorTest {
-	GeneProcessor testGP1, testGP2;
+	GeneProcessor testGP;
 	AGPReader testSR;	
 	Scaffold testScaffold;
 	ArrayList<Scaffold> testScaffolds;
@@ -23,7 +23,11 @@ public class GeneProcessorTest {
 		// Make sure the AGPReader is cooperating:
 		assertTrue(testScaffolds.size() == 2);
 		assertTrue(testScaffolds.get(0) instanceof Scaffold);
+		assertEquals("scaffold00001", testScaffolds.get(0).getName());
 		assertTrue(testScaffolds.get(0).getScaffoldContigs().get(0) instanceof ScaffoldContig);
+		
+		// Create a GeneProcessor
+		testGP = new GeneProcessor(testScaffolds);
 		
 		// Initialize a Gene to process
 		testFeatures = new ArrayList<String[]>();
@@ -36,14 +40,9 @@ public class GeneProcessorTest {
 		testStringArray = "scaffold00001	maker	exon	6500	12000	.	+	.	ID=4;Name=BDOR_007864-RA;Parent=2".split("\t");
 		testFeatures.add(testStringArray);
 		testGene1 = new Gene(testFeatures);
-		
-		// Create a GeneProcessor
-		testGP1 = new GeneProcessor(testScaffolds);
-		testGP1.passInGene(testGene1);
-
-		
-		// Do it again for a Gene which doesn't span multiple contigs
-		testFeatures.clear();
+			
+//		 Do it again for a Gene which doesn't span multiple contigs
+		testFeatures = new ArrayList<String[]>();
 		testStringArray = "scaffold00002	maker	gene	23220	29000	.	+	.	ID=1;Name=BDOR_007864".split("\t");
 		testFeatures.add(testStringArray);
 		testStringArray = "scaffold00002	maker	mRNA	23220	29000	.	+	.	ID=2;Name=BDOR_007864-RA;Parent=1".split("\t");
@@ -53,55 +52,33 @@ public class GeneProcessorTest {
 		testStringArray = "scaffold00002	maker	CDS	24000	27000	.	+	.	ID=4;Name=BDOR_007864-RA;Parent=2".split("\t");
 		testFeatures.add(testStringArray);
 		testGene2 = new Gene(testFeatures);
-		testGP2 = new GeneProcessor(testScaffolds);
-		testGP2.passInGene(testGene2);
 	}
+	
+	
+	
+	// TODO wtf why is it scaffold00001 when created then scaffold00002 when called?
 	
 	
 	@Test
 	public void testGeneProcessor() throws Exception {
 		setUp();
-		assertTrue(testGP1 instanceof GeneProcessor);
-		assertEquals(testScaffolds, testGP1.allScaffolds);
-		assertEquals(testGene1, testGP1.geneBeingProcessed);
-		assertTrue(testGP1.genesToWrite instanceof ArrayList);
-		
-		
-		assertTrue(testGP2.geneBeingProcessed instanceof Gene);
-		assertEquals(testGene2, testGP2.geneBeingProcessed);
-	}
-		
+		assertTrue(testGP instanceof GeneProcessor);
+		assertEquals(testScaffolds, testGP.allScaffolds);
+		assertTrue(testGP.genesToWrite instanceof ArrayList);		
+		assertTrue(testGP.genesToWrite.isEmpty());
+	}	
 	
 	@Test
-	public void testFindCurrentScaffold() throws Exception {
+	public void testFindScaffold() throws Exception {
 		setUp();
-		assertEquals(testScaffolds.get(0), testGP1.currentScaffold);
-		assertEquals(testScaffolds.get(1), testGP2.currentScaffold);
+		assertTrue(testGP.findScaffold(testGene1) instanceof Scaffold);
+		assertEquals(testScaffolds.get(0).getName(), testGP.findScaffold(testGene1).getName());
 	}
 	
 	@Test
 	public void testFindCurrentScaffoldContig() throws Exception {
 		setUp();
-		assertEquals("sctg_0002_0002", testGP2.findCurrentScaffoldContig().getName());
+		assertEquals("sctg_0002_0002", testGP.findCurrentScaffoldContig(testGene2).getName());
 	}
-	
-	@Test
-	public void testFeatureSpansMultipleContigs() throws Exception {
-		setUp();
-		testStringArray = "scaffold00002	maker	exon	28000	33000	.	+	.	ID=3;Name=BDOR_007864-RA;Parent=2".split("\t");
-		assertTrue(testGP2.featureSpansMultipleContigs(testStringArray));
-		testStringArray = "scaffold00002	maker	exon	6400	13000	.	+	.	ID=3;Name=BDOR_007864-RA;Parent=2".split("\t");
-		assertFalse(testGP1.featureSpansMultipleContigs(testStringArray));
-		
-	}
-	
-	@Test
-	public void testGeneSpansMultipleContigs() throws Exception {
-		setUp();
-		assertTrue(testGP1.geneSpansMultipleContigs());
-		assertFalse(testGP2.geneSpansMultipleContigs());
-	}
-	
-	
 	
 }

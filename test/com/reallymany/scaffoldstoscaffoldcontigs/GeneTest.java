@@ -56,19 +56,6 @@ public class GeneTest {
 	}
 	
 	@Test
-	public void testGeneGettersAndSetters() throws ScaffoldContigException {
-		setUp();
-		try {
-			testGene2.getEnclosingScaffoldContig();
-			fail("Didn't throw excpetion!");
-		} catch (ScaffoldContigException e) {}
-		
-		
-		testGene2.setEnclosingScaffoldContig(testSctg);
-		assertEquals(testSctg, testGene2.getEnclosingScaffoldContig());
-	}
-	
-	@Test
 	public void testAddFeature() {
 		setUp();
 		assertEquals(10, testGene2.getFeatures().size());
@@ -77,21 +64,5 @@ public class GeneTest {
 		testGene2.addFeature(testStringArray);
 		assertEquals(11, testGene2.getFeatures().size());
 		assertEquals("foo", testGene2.getFeatures().get(10)[2]);
-	}
-	
-	@Test
-	public void testScaffoldToSctg() throws ScaffoldContigException {
-		setUp();
-		try {
-			testGene1.scaffoldToSctg();
-			fail("Didn't throw exception!");
-		} catch (ScaffoldContigException e) {}
-		testGene2.setEnclosingScaffoldContig(testSctg);
-		testGene2.scaffoldToSctg();
-		assertEquals("sctg_0080_0002", testGene2.getFeatures().get(0)[0]);
-		assertEquals("sctg_0080_0002", testGene2.getFeatures().get(9)[0]);
-		assertEquals("52", testGene2.getFeatures().get(0)[3]);
-		assertEquals("3754", testGene2.getFeatures().get(0)[4]);
-		assertEquals("717", testGene2.getFeatures().get(9)[3]);
 	}	
 }
