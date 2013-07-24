@@ -35,6 +35,21 @@ public class GeneProcessor {
 		throw new ScaffoldContigException("no such scaffold @ GeneProcessor.findCurrentScaffold()");
 	}
 
+	public int findGeneStartingIndex(Gene gene) {
+		return Integer.parseInt(gene.getFeatures().get(0)[3]);
+	}
+	
+	public int findGeneEndingIndex(Gene gene) {
+		return Integer.parseInt(gene.getFeatures().get(0)[4]);
+	}
+	
+	public int findFeatureStartingIndex(String[] feature) {
+		return Integer.parseInt(feature[3]);
+	}
+	
+	public int findFeatureEndingIndex(String[] feature) {
+		return Integer.parseInt(feature[4]);
+	}
 
 	// Assumes geneBeingProcessed does NOT span 2 or more contigs
 	public ScaffoldContig findScaffoldContig(Gene gene, Scaffold scaffold) throws ScaffoldContigException {
@@ -72,6 +87,12 @@ public class GeneProcessor {
 		feature[3] = Integer.toString(newBegin);
 		feature[4] = Integer.toString(newEnd);
 	}
+
+	
+
+	
+
+	
 
 
 }

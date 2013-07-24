@@ -82,6 +82,39 @@ public class GeneProcessorTest {
 	}
 	
 	@Test
+	public void testFindGeneStartingIndex() throws Exception {
+		setUp();
+		int start = testGP.findGeneStartingIndex(testGene1);
+		assertEquals(5, start);
+		assertEquals(23220, testGP.findGeneStartingIndex(testGene2));
+	}
+	
+	@Test
+	public void testFindGeneEndingIndex() throws Exception {
+		setUp();
+		assertEquals(13000, testGP.findGeneEndingIndex(testGene1));
+		assertEquals(29000, testGP.findGeneEndingIndex(testGene2));
+	}
+	
+	@Test
+	public void testFindFeatureStartingIndex() throws Exception {
+		setUp();
+		String[] feature1 = testGene1.getFeatures().get(3);
+		String[] feature2 = testGene2.getFeatures().get(2);
+		assertEquals(6500, testGP.findFeatureStartingIndex(feature1));
+		assertEquals(24000, testGP.findFeatureStartingIndex(feature2));
+	}
+	
+	@Test
+	public void testFindFeatureEndingIndex() throws Exception {
+		setUp();
+		String[] feature1 = testGene1.getFeatures().get(2);
+		String[] feature2 = testGene2.getFeatures().get(1);
+		assertEquals(4000, testGP.findFeatureEndingIndex(feature1));
+		assertEquals(29000, testGP.findFeatureEndingIndex(feature2));
+	}
+	
+	@Test
 	public void testFindScaffoldContig() throws Exception {
 		setUp();
 		testScaffold = testScaffolds.get(1);
@@ -95,7 +128,7 @@ public class GeneProcessorTest {
 		testScaffoldContig = testScaffolds.get(1).getScaffoldContigs().get(1);
 		testGene2 = testGP.scaffoldToScaffoldContig(testGene2, testScaffoldContig);
 		assertEquals("sctg_0002_0002", testGene2.getFeatures().get(0)[0]);
-		// TODO test actual gene object ... once we got recalculateIndices()...
+		assertEquals("791", testGene2.getFeatures().get(2)[3]);
 	}
 	
 	@Test
