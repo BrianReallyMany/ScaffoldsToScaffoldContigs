@@ -15,7 +15,6 @@ public class GeneProcessor {
 	// geneBeingProcessed = gene;
 	// genesToWrite.clear();
 	// currentScaffold = findCurrentScaffold();
-	// gene.setEnclosingScaffold(currentScaffold)    // necessary?
 	// if (!geneSpansMultipleContigs) {
 	//   gene.setEnclosingScaffoldContig(findCurrentScaffoldContig());
 	//   gene.scaffoldToSctg();
@@ -44,6 +43,16 @@ public class GeneProcessor {
 	public ScaffoldContig findCurrentScaffoldContig(Gene gene) throws ScaffoldContigException {
 		int geneStartingIndex = Integer.parseInt(gene.getFeatures().get(0)[3]);
 		return findScaffold(gene).getScaffoldContig(geneStartingIndex);
+	}
+
+
+	public boolean spansMultipleContigs(Gene gene, Scaffold scaffold) throws ScaffoldContigException {
+		int startIndex = Integer.parseInt(gene.getFeatures().get(0)[3]);
+		int endIndex = Integer.parseInt(gene.getFeatures().get(0)[4]);
+		ScaffoldContig startSctg = scaffold.getScaffoldContig(startIndex);
+		ScaffoldContig endSctg = scaffold.getScaffoldContig(endIndex);
+		return !(startSctg.equals(endSctg));
+		
 	}
 
 
