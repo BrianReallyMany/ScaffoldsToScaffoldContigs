@@ -4,9 +4,6 @@ import java.util.ArrayList;
 
 public class ScaffoldsToScaffoldContigs {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		if (args.length != 3) {
 			System.out.println("Usage: ScaffoldToScaffoldContigs <agp_file> <sorted_gff_file> <output_file_prefix>");			
@@ -34,7 +31,6 @@ public class ScaffoldsToScaffoldContigs {
 	}
 }
 
-// TODO make methods that require a gene in GeneProcessor take it as argument?
 // TODO where does the Name=... field get updated? in Gene.split()?
 // TODO write GFFWriter (constructor takes filename, method writeGenes takes ArrayList<Gene>)
 // TODO consider using TreeSet for Scaffold.scaffoldContigs ?

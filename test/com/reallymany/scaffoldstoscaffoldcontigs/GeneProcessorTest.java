@@ -10,6 +10,7 @@ public class GeneProcessorTest {
 	GeneProcessor testGP;
 	AGPReader testSR;	
 	Scaffold testScaffold;
+	ScaffoldContig testScaffoldContig;
 	ArrayList<Scaffold> testScaffolds;
 	ArrayList<String[]> testFeatures;
 	String[] testStringArray;
@@ -56,16 +57,11 @@ public class GeneProcessorTest {
 	
 	
 	
-	// TODO wtf why is it scaffold00001 when created then scaffold00002 when called?
-	
-	
 	@Test
 	public void testGeneProcessor() throws Exception {
 		setUp();
 		assertTrue(testGP instanceof GeneProcessor);
 		assertEquals(testScaffolds, testGP.allScaffolds);
-		assertTrue(testGP.genesToWrite instanceof ArrayList);		
-		assertTrue(testGP.genesToWrite.isEmpty());
 	}	
 	
 	@Test
@@ -86,9 +82,27 @@ public class GeneProcessorTest {
 	}
 	
 	@Test
-	public void testFindCurrentScaffoldContig() throws Exception {
+	public void testFindScaffoldContig() throws Exception {
 		setUp();
-		assertEquals("sctg_0002_0002", testGP.findCurrentScaffoldContig(testGene2).getName());
+		testScaffold = testScaffolds.get(1);
+		assertEquals("sctg_0002_0002", testGP.findScaffoldContig(testGene2, testScaffold).getName());
+		assertEquals(testScaffold.getScaffoldContigs().get(1), testGP.findScaffoldContig(testGene2, testScaffold));
 	}
 	
+	@Test
+	public void testScaffoldToScaffoldContig() throws Exception {
+		setUp();
+		testScaffoldContig = testScaffolds.get(1).getScaffoldContigs().get(1);
+		testGene2 = testGP.scaffoldToScaffoldContig(testGene2, testScaffoldContig);
+		assertEquals("sctg_0002_0002", testGene2.getFeatures().get(0)[0]);
+		// TODO test actual gene object ... once we got recalculateIndices()...
+	}
+	
+	@Test
+	public void testRecalculateIndices() throws Exception {
+		setUp();
+		testScaffoldContig = testScaffolds.get(1).getScaffoldContigs().get(1);
+		testGP.recalculateIndices(testGene2.getFeatures().get(0), testScaffoldContig);
+		assertEquals("11", testGene2.getFeatures().get(0)[3]);
+	}
 }
