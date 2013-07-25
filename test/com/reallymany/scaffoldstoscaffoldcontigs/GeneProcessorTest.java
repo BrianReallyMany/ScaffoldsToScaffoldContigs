@@ -138,4 +138,34 @@ public class GeneProcessorTest {
 		testGP.recalculateIndices(testGene2.getFeatures().get(0), testScaffoldContig);
 		assertEquals("11", testGene2.getFeatures().get(0)[3]);
 	}
+	
+	@Test
+	public void testSplitUp() throws Exception {
+		setUp();
+		testScaffold = testGP.findScaffold(testGene1);
+		ArrayList<Gene> splitUpGenes = testGP.splitUp(testGene1, testScaffold);
+		assertTrue(splitUpGenes instanceof ArrayList);
+		assertEquals("ID=1.1;Name=BDOR_007864.1", splitUpGenes.get(0).getFeatures().get(0)[8]);
+		assertEquals("ID=1.2;Name=BDOR_007864.2", splitUpGenes.get(1).getFeatures().get(0)[8]);
+
+	}
+	
+	// HOT MESS!!! so we need to make a deep copy of the passed-in gene's fields so we can
+	// manipulate them without affecting the original gene. not sure how to do that yet.
+	// maybe there is another way out; maybe this is a first stack-exchange question...
+	
+	
+	@Test
+	public void testGeneEndsOnThisSctg() throws Exception {
+		setUp();
+		assertTrue(testGP.geneEndsOnThisSctg(testGene1, testScaffolds.get(0).getScaffoldContigs().get(1)));
+		assertFalse(testGP.geneEndsOnThisSctg(testGene1, testScaffolds.get(0).getScaffoldContigs().get(0)));
+	}
+	
+	@Test
+	public void testAppendSubtype() throws Exception {
+		String input = "ID=1;Name=BDOR_007864";
+		String expectedOutput = "ID=1.1;Name=BDOR_007864.1";
+		assertEquals(expectedOutput, testGP.appendSubtype(1, input));
+	}
 }

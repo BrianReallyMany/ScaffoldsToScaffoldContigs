@@ -47,12 +47,27 @@ public class GeneTest {
 	@Test
 	public void testGene() {
 		setUp();
+		
+		// test no-parameters constructor
 		assertTrue(testGene1 instanceof Gene);
 		assertTrue(testGene1.getFeatures() instanceof ArrayList);
 		
 		assertTrue(testGene2 instanceof Gene);
 		assertTrue(testGene2.features instanceof ArrayList);
 		assertEquals("106151", testGene2.getFeatures().get(7)[3]);
+		
+		// test clone constructor
+		Gene clonedGene = new Gene(testGene2);
+		// the values in the fields of the features should match up ...
+		assertEquals(testGene2.getFeatures().get(0)[0], clonedGene.getFeatures().get(0)[0]);
+		assertEquals(testGene2.getFeatures().get(9)[4], clonedGene.getFeatures().get(9)[4]);
+		// but they should be different objects ...
+		assertFalse(testGene2.getFeatures().equals(clonedGene.getFeatures()));
+		// and if you change a field in one, the corresponding field in the other doesn't change ...
+		clonedGene.getFeatures().get(0)[0] = "foo";
+		assertEquals("scaffold00080", testGene2.getFeatures().get(0)[0]);
+		assertEquals("foo", clonedGene.getFeatures().get(0)[0]);
+
 	}
 	
 	@Test
