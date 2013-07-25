@@ -105,37 +105,37 @@ public class GeneProcessor {
 		Gene currentGene;
 		String[] currentFeature;
 		ArrayList<Gene> splitUpGenes = new ArrayList<Gene>();
-		System.out.println("1input gene looks like" + gene.getFeatures().get(0)[8]);
-
-		// first gene is a special case; its begin index doesn't get changed...
 		ScaffoldContig currentSctg = scaffold.getScaffoldContig(findGeneStartingIndex(gene));
-		currentGene = new Gene(gene);
 		
-		// "initialize" new gene with the first row...
-		currentFeature = gene.getFeatures().get(0);
-		currentGene.addFeature(currentFeature);
-		System.out.println("2input gene looks like" + gene.getFeatures().get(0)[8]);
-
-		// then edit that row
-		currentGene.getFeatures().get(0)[4] = Integer.toString(currentSctg.getEnd());
-		currentGene.getFeatures().get(0)[8] = appendSubtype(currentGeneIndex, currentGene.getFeatures().get(0)[8]);
-		splitUpGenes.add(currentGene);
+//		// first gene is a special case; its begin index doesn't get changed...
+//		ScaffoldContig currentSctg = scaffold.getScaffoldContig(findGeneStartingIndex(gene));
+//		currentGene = new Gene(gene);
+//		
+//		// wait a minute, didn't i just copy the whole gene?
+//		System.out.println(currentGene.getFeatures().get(3)[3]);
+//		
+//		// "initialize" new gene with the first row...
+//		currentFeature = gene.getFeatures().get(0);
+//		currentGene.addFeature(currentFeature);
+//
+//		// then edit that row
+//		currentGene.getFeatures().get(0)[4] = Integer.toString(currentSctg.getEnd());
+//		currentGene.getFeatures().get(0)[8] = appendSubtype(currentGeneIndex, currentGene.getFeatures().get(0)[8]);
+//		splitUpGenes.add(currentGene);
 		
 		
 		// now we have our first new gene, though it currently contains only the first row.
 		// time to start looping ...
 		while (!reachedLastSctg) {
-			currentGeneIndex ++;
-			currentSctg = scaffold.getNextScaffoldContig(currentSctg);
-			currentGene = new Gene();			
-			currentGene.addFeature(gene.getFeatures().get(0));
+			currentGene = new Gene(gene);
+			adjustIndices(currentGene, currentSctg);
+			
 			
 			// is this the last sctg?
 			if (geneEndsOnThisSctg(gene, currentSctg)) {
 				// don't change gene's end index in this case
 				currentGene.getFeatures().get(0)[3] = Integer.toString(currentSctg.getBegin());
 				currentGene.getFeatures().get(0)[8] = appendSubtype(currentGeneIndex, currentGene.getFeatures().get(0)[8]);
-				System.out.println("about to add" + currentGene.getFeatures().get(0)[8]);
 				splitUpGenes.add(currentGene);
 				reachedLastSctg = true;
 			} else {
@@ -145,9 +145,39 @@ public class GeneProcessor {
 				currentGene.getFeatures().get(0)[4] = Integer.toString(currentSctg.getEnd());
 				currentGene.getFeatures().get(0)[8] = appendSubtype(currentGeneIndex, currentGene.getFeatures().get(0)[8]);				
 				splitUpGenes.add(currentGene);
+				currentSctg = scaffold.getNextScaffoldContig(currentSctg);
+				currentGeneIndex ++;
 			}
 		}		
 		return splitUpGenes;
+	}
+
+	public void adjustIndices(Gene gene, ScaffoldContig sctg) {
+		int sctgBegin = sctg.getBegin();
+		int sctgEnd = sctg.getEnd();
+		int featureBegin, featureEnd;
+		String[] currentFeature;
+		for (int i=0; i<gene.getFeatures().size(); i++) {
+			currentFeature = gene.getFeatures().get(i);
+			featureBegin = Integer.parseInt(currentFeature[3]);
+			featureEnd = Integer.parseInt(currentFeature[4]);
+			if ((featureEnd < sctgBegin) || (featureBegin > sctgEnd)) {
+				// Feature is not on this ScaffoldContig at all
+				// TODO
+			} else {
+				if (featureBegin < sctgBegin) {
+					currentFeature[3] = Integer.toString(sctgBegin);
+				} else {
+					currentFeature[3] = Integer.toString(featureBegin - sctgBegin + 1);
+				}
+				if (featureEnd > sctgEnd) {
+					currentFeature[4] = Integer.toString(sctgEnd);
+				} else {
+					currentFeature[4] = Integer.toString(featureEnd - sctgBegin + 1);
+				}
+			}
+		}
+		
 	}
 
 	// NOTE technically only checks that gene ends BEFORE the end of this Sctg...

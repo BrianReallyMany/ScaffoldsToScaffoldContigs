@@ -147,13 +147,19 @@ public class GeneProcessorTest {
 		assertTrue(splitUpGenes instanceof ArrayList);
 		assertEquals("ID=1.1;Name=BDOR_007864.1", splitUpGenes.get(0).getFeatures().get(0)[8]);
 		assertEquals("ID=1.2;Name=BDOR_007864.2", splitUpGenes.get(1).getFeatures().get(0)[8]);
-
+		// TODO mucho
+	}	
+	
+	@Test
+	public void testAdjustIndices() throws Exception {
+		setUp();
+		testScaffoldContig = testScaffolds.get(1).getScaffoldContigs().get(1);
+		testGP.adjustIndices(testGene2, testScaffoldContig);
+		assertEquals("11", testGene2.getFeatures().get(0)[3]);
+		assertEquals("791", testGene2.getFeatures().get(3)[3]);
+		assertEquals("5791", testGene2.getFeatures().get(0)[4]);
+		assertEquals("3791", testGene2.getFeatures().get(2)[4]);
 	}
-	
-	// HOT MESS!!! so we need to make a deep copy of the passed-in gene's fields so we can
-	// manipulate them without affecting the original gene. not sure how to do that yet.
-	// maybe there is another way out; maybe this is a first stack-exchange question...
-	
 	
 	@Test
 	public void testGeneEndsOnThisSctg() throws Exception {
