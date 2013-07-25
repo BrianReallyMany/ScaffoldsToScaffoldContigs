@@ -5,22 +5,29 @@ import java.util.Iterator;
 
 public class GeneProcessor {
 	ArrayList<Scaffold> allScaffolds;
+	ArrayList<Gene> genesBeingProcessed;
 
 	public GeneProcessor(ArrayList<Scaffold> scaffolds) throws ScaffoldContigException {
 		allScaffolds = scaffolds;	
 	}
 	
-	// public ArrayList<Gene> prepareGeneForWriting(Gene gene) {
-	// ArrayList<Gene> genesToWrite = new ArrayList<Gene>();
+	// public void prepareGeneForWriting(Gene gene) {
 	// Scaffold currentScaffold = findScaffold(gene);
 	// if (!spansMultipleContigs(gene, currentScaffold)) {
 	//   ScaffoldContig sctg = findScaffoldContig(gene, currentScaffold);
-	//   genesToWrite.add(scaffoldToScaffoldContig(gene, sctg));
-	//   return genesToWrite;
+	//   genesBeingProcessed.add(scaffoldToScaffoldContig(gene, sctg));
 	// else {
-	//   genesToWrite = gene.splitUp();
-	//   for gene in genesToWrite do gene.scaffoldToSctg()
-	//   return genesToWrite;	
+	//   genesToSplit = splitUp(gene, currentScaffold);
+	//   for gene in genesToSplit do prepareGeneForWriting(gene) }
+	// NOTE: void method now. must call prepareGeneForWriting on each 'gene'
+	// read from gff, then call returnProcessedGenes() for output.
+	// but, recursive, so bonus points.
+	
+	
+	// public ArrayList<Gene> returnProcessedGenes() {
+	//  ArrayList<Gene> genesToReturn = genesBeingProcessed;
+	//  genesBeingProcessed.clear();
+	//  return genesToReturn; }
 	
 	
 	public Scaffold findScaffold(Gene gene) throws ScaffoldContigException {
@@ -53,18 +60,17 @@ public class GeneProcessor {
 
 	// Assumes geneBeingProcessed does NOT span 2 or more contigs
 	public ScaffoldContig findScaffoldContig(Gene gene, Scaffold scaffold) throws ScaffoldContigException {
-		int geneStartingIndex = Integer.parseInt(gene.getFeatures().get(0)[3]);
+		int geneStartingIndex = findGeneStartingIndex(gene);
 		return scaffold.getScaffoldContig(geneStartingIndex);
 	}
 
 
 	public boolean spansMultipleContigs(Gene gene, Scaffold scaffold) throws ScaffoldContigException {
-		int startIndex = Integer.parseInt(gene.getFeatures().get(0)[3]);
-		int endIndex = Integer.parseInt(gene.getFeatures().get(0)[4]);
+		int startIndex = findGeneStartingIndex(gene);
+		int endIndex = findGeneEndingIndex(gene);
 		ScaffoldContig startSctg = scaffold.getScaffoldContig(startIndex);
 		ScaffoldContig endSctg = scaffold.getScaffoldContig(endIndex);
-		return !(startSctg.equals(endSctg));
-		
+		return !(startSctg.equals(endSctg));		
 	}
 
 	public Gene scaffoldToScaffoldContig(Gene gene,

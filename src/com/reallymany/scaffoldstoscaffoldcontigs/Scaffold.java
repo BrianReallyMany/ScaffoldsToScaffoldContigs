@@ -8,8 +8,8 @@ public class Scaffold {
 	public ArrayList<ScaffoldContig> scaffoldContigs;
 	
 	public Scaffold(String n) {
-		this.name = n;
-		this.scaffoldContigs = new ArrayList<ScaffoldContig>();
+		name = n;
+		scaffoldContigs = new ArrayList<ScaffoldContig>();
 	}
 		
 	public String getName() {
@@ -19,8 +19,6 @@ public class Scaffold {
 	public ArrayList<ScaffoldContig> getScaffoldContigs() {
 		return scaffoldContigs;
 	}
-
-
 
 	public void addScaffoldContig(ScaffoldContig sctg) {
 		this.scaffoldContigs.add(sctg);
@@ -39,5 +37,14 @@ public class Scaffold {
 			}
 		}	
 		throw new ScaffoldContigException("Correct ScaffoldContig not found");
+	}
+
+	public ScaffoldContig getNextScaffoldContig(ScaffoldContig sctg) throws ScaffoldContigException {
+		int inputIndex = scaffoldContigs.indexOf(sctg);
+		if (inputIndex + 2 <= scaffoldContigs.size()) {
+			return scaffoldContigs.get(inputIndex+1);
+		} else {
+			throw new ScaffoldContigException("index out of bounds at Scaffold.getNextScaffoldContig");
+		}		
 	}
 }

@@ -30,7 +30,7 @@ public class GeneProcessorTest {
 		// Create a GeneProcessor
 		testGP = new GeneProcessor(testScaffolds);
 		
-		// Initialize a Gene to process
+		// Initialize a Gene to process (spans multiple contigs)
 		testFeatures = new ArrayList<String[]>();
 		testStringArray = "scaffold00001	maker	gene	5	13000	.	+	.	ID=1;Name=BDOR_007864".split("\t");
 		testFeatures.add(testStringArray);

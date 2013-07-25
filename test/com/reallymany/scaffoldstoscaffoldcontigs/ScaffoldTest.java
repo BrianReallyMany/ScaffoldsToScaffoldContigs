@@ -6,34 +6,56 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ScaffoldTest {
-	Scaffold testScaffold;
-	ScaffoldContig sctg = new ScaffoldContig("sctg_0001_0001", 1, 4968);
+	Scaffold testScaffold1, testScaffold2;
+	ScaffoldContig testSctg1, testSctg2A, testSctg2B, testSctg2C;
 
 	@Before
 	public void setUp() {
-		testScaffold = new Scaffold("scaffold00001");
+		testScaffold1 = new Scaffold("scaffold00001");
+		testSctg1 = new ScaffoldContig("sctg_0001_0001", 1, 4968);
+		
+		testScaffold2 = new Scaffold("scaffold00002");
+		testSctg2A = new ScaffoldContig("sctg_0002_0001", 1, 2000);
+		testSctg2B = new ScaffoldContig("sctg_0002_0002", 2100, 4000);
+		testSctg2C = new ScaffoldContig("sctg_0002_0003", 4100, 6000);
+		testScaffold2.addScaffoldContig(testSctg2A);
+		testScaffold2.addScaffoldContig(testSctg2B);
+		testScaffold2.addScaffoldContig(testSctg2C);
+		
 	}
 
 	@Test
 	public void testScaffold() throws Exception {
 		setUp();
-		assertTrue(testScaffold instanceof Scaffold);
-		assertEquals(testScaffold.scaffoldContigs.size(), 0);
+		assertTrue(testScaffold1 instanceof Scaffold);
+		assertEquals(testScaffold1.scaffoldContigs.size(), 0);
 		
-		testScaffold.addScaffoldContig(sctg);
-		assertEquals(testScaffold.scaffoldContigs.size(), 1);
+		testScaffold1.addScaffoldContig(testSctg1);
+		assertEquals(testScaffold1.scaffoldContigs.size(), 1);
 		
-		assertEquals(sctg.getName(), testScaffold.getScaffoldContig(1).getName());
-		assertEquals(sctg.getName(), testScaffold.getScaffoldContig(4000).getName());
-		assertEquals(sctg.getName(), testScaffold.getScaffoldContig(4968).getName());
+		assertEquals(testSctg1.getName(), testScaffold1.getScaffoldContig(1).getName());
+		assertEquals(testSctg1.getName(), testScaffold1.getScaffoldContig(4000).getName());
+		assertEquals(testSctg1.getName(), testScaffold1.getScaffoldContig(4968).getName());
 		
 		try {
-			testScaffold.getScaffoldContig(4969);
+			testScaffold1.getScaffoldContig(4969);
 			fail("Didn't throw exception!");
 		} catch (ScaffoldContigException e) {
 		}
 		try {
-			testScaffold.getScaffoldContig(0);
+			testScaffold1.getScaffoldContig(0);
+			fail("Didn't throw exception!");
+		} catch (ScaffoldContigException e) {
+		}
+	}
+	
+	@Test
+	public void testGetNextScaffoldContig() throws Exception {
+		setUp();
+		assertEquals(testSctg2B, testScaffold2.getNextScaffoldContig(testSctg2A));
+		assertEquals(testSctg2C, testScaffold2.getNextScaffoldContig(testSctg2B));
+		try {
+			testScaffold2.getNextScaffoldContig(testSctg2C);
 			fail("Didn't throw exception!");
 		} catch (ScaffoldContigException e) {
 		}
