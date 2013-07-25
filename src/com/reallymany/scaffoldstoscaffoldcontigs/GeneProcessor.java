@@ -103,7 +103,7 @@ public class GeneProcessor {
 		Boolean reachedLastSctg = false;
 		int currentGeneIndex = 1;
 		Gene currentGene;
-		String[] currentFeature;
+//		String[] currentFeature;
 		ArrayList<Gene> splitUpGenes = new ArrayList<Gene>();
 		ScaffoldContig currentSctg = scaffold.getScaffoldContig(findGeneStartingIndex(gene));
 		
@@ -129,27 +129,35 @@ public class GeneProcessor {
 		while (!reachedLastSctg) {
 			currentGene = new Gene(gene);
 			adjustIndices(currentGene, currentSctg);
-			
+			appendSubtype(currentGeneIndex, currentGene);
+			splitUpGenes.add(currentGene);
 			
 			// is this the last sctg?
-			if (geneEndsOnThisSctg(gene, currentSctg)) {
-				// don't change gene's end index in this case
-				currentGene.getFeatures().get(0)[3] = Integer.toString(currentSctg.getBegin());
-				currentGene.getFeatures().get(0)[8] = appendSubtype(currentGeneIndex, currentGene.getFeatures().get(0)[8]);
-				splitUpGenes.add(currentGene);
+			if (geneEndsOnThisSctg(gene, currentSctg)) {				
 				reachedLastSctg = true;
-			} else {
-				// change gene's begin *and* end indices to match sctg;
-				// gene extends beyond this sctg in both directions.
-				currentGene.getFeatures().get(0)[3] = Integer.toString(currentSctg.getBegin());
-				currentGene.getFeatures().get(0)[4] = Integer.toString(currentSctg.getEnd());
-				currentGene.getFeatures().get(0)[8] = appendSubtype(currentGeneIndex, currentGene.getFeatures().get(0)[8]);				
-				splitUpGenes.add(currentGene);
+			} else {				
 				currentSctg = scaffold.getNextScaffoldContig(currentSctg);
 				currentGeneIndex ++;
 			}
 		}		
 		return splitUpGenes;
+	}
+
+	private void appendSubtype(int currentGeneIndex, Gene gene) {
+		for (String[] feature : gene.getFeatures()) {
+			feature[8] = appendSubtype(currentGeneIndex, feature[8]);
+		}		
+	}
+	
+	public String appendSubtype(int currentGeneIndex, String string) {
+		String output;
+		String addOn = "." + Integer.toString(currentGeneIndex);
+		String[] lastColumn = string.split(";");
+		for (int n=0; n < lastColumn.length; n++) {
+			lastColumn[n] = lastColumn[n].concat(addOn);
+		}
+		output = StringUtils.join(lastColumn, ';');
+		return output;
 	}
 
 	public void adjustIndices(Gene gene, ScaffoldContig sctg) {
@@ -185,16 +193,7 @@ public class GeneProcessor {
 		return (findGeneEndingIndex(gene) <= currentSctg.getEnd());
 	}
 
-	public String appendSubtype(int i, String string) {
-		String output;
-		String addOn = "." + Integer.toString(i);
-		String[] lastColumn = string.split(";");
-		for (int n=0; n < lastColumn.length; n++) {
-			lastColumn[n] = lastColumn[n].concat(addOn);
-		}
-		output = StringUtils.join(lastColumn, ';');
-		return output;
-	}
+	
 
 	
 
