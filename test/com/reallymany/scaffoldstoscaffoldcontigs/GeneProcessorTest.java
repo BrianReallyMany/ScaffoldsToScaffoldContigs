@@ -112,15 +112,7 @@ public class GeneProcessorTest {
 		String[] feature2 = testGene2.getFeatures().get(1);
 		assertEquals(4000, testGP.findFeatureEndingIndex(feature1));
 		assertEquals(29000, testGP.findFeatureEndingIndex(feature2));
-	}
-	
-	@Test
-	public void testFindScaffoldContig() throws Exception {
-		setUp();
-		testScaffold = testScaffolds.get(1);
-		assertEquals("sctg_0002_0002", testGP.findScaffoldContig(testGene2, testScaffold).getName());
-		assertEquals(testScaffold.getScaffoldContigs().get(1), testGP.findScaffoldContig(testGene2, testScaffold));
-	}
+	}	
 	
 	@Test
 	public void testScaffoldToScaffoldContig() throws Exception {
@@ -140,26 +132,34 @@ public class GeneProcessorTest {
 	}
 	
 	@Test
-	public void testSplitUp() throws Exception {
+	public void testPrepareGeneForWriting() throws Exception {
 		setUp();
-		testScaffold = testGP.findScaffold(testGene1);
-		ArrayList<Gene> splitUpGenes = testGP.splitUp(testGene1, testScaffold);
+		ArrayList<Gene> splitUpGenes = testGP.prepareGeneForWriting(testGene1);
 		assertTrue(splitUpGenes instanceof ArrayList);
 		assertEquals("ID=1.1;Name=BDOR_007864.1", splitUpGenes.get(0).getFeatures().get(0)[8]);
 		assertEquals("ID=1.2;Name=BDOR_007864.2", splitUpGenes.get(1).getFeatures().get(0)[8]);
-		// TODO mucho
+		assertEquals("ID=2.2;Name=BDOR_007864-RA.2;Parent=1.2", splitUpGenes.get(1).getFeatures().get(1)[8]);
+		assertEquals(3, splitUpGenes.get(0).getFeatures().size());
+		assertEquals(3, splitUpGenes.get(1).getFeatures().size());
+		assertEquals("gene", splitUpGenes.get(0).getFeatures().get(0)[2]);
+		assertEquals("gene", splitUpGenes.get(1).getFeatures().get(0)[2]);
+		assertEquals("5", splitUpGenes.get(0).getFeatures().get(0)[3]);
+		assertEquals("183", splitUpGenes.get(1).getFeatures().get(2)[3]);
+		assertEquals("5683", splitUpGenes.get(1).getFeatures().get(2)[4]);
+		assertEquals("exon", splitUpGenes.get(0).getFeatures().get(2)[2]);
+		assertEquals("exon", splitUpGenes.get(1).getFeatures().get(2)[2]);
 	}	
 	
-	@Test
-	public void testAdjustIndices() throws Exception {
-		setUp();
-		testScaffoldContig = testScaffolds.get(1).getScaffoldContigs().get(1);
-		testGP.adjustIndices(testGene2, testScaffoldContig);
-		assertEquals("11", testGene2.getFeatures().get(0)[3]);
-		assertEquals("791", testGene2.getFeatures().get(3)[3]);
-		assertEquals("5791", testGene2.getFeatures().get(0)[4]);
-		assertEquals("3791", testGene2.getFeatures().get(2)[4]);
-	}
+//	@Test
+//	public void testAdjustIndices() throws Exception {
+//		setUp();
+//		testScaffoldContig = testScaffolds.get(1).getScaffoldContigs().get(1);
+//		testGP.adjustIndices(testGene2, testScaffoldContig);
+//		assertEquals("11", testGene2.getFeatures().get(0)[3]);
+//		assertEquals("791", testGene2.getFeatures().get(3)[3]);
+//		assertEquals("5791", testGene2.getFeatures().get(0)[4]);
+//		assertEquals("3791", testGene2.getFeatures().get(2)[4]);
+//	}
 	
 	@Test
 	public void testGeneEndsOnThisSctg() throws Exception {
@@ -175,3 +175,7 @@ public class GeneProcessorTest {
 		assertEquals(expectedOutput, testGP.appendSubtype(1, input));
 	}
 }
+
+
+// TODO seems like features are not getting deleted
+// TODO 'gene' feature not making it to output guys.
