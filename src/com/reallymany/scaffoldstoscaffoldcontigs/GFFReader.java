@@ -24,20 +24,17 @@ public class GFFReader extends CSVReader {
 	
 	public Gene readOneGene() throws IOException {
 		Gene nextGene = new Gene();
-//		ArrayList<String[]> nextGeneArray = new ArrayList<String[]>();
 		if (atBeginningOfFile) {
 			nextLine = this.readNext();	
 			atBeginningOfFile = false;
 		}
 		
 		nextGene.addFeature(nextLine);
-//		nextGeneArray.add(nextLine);
 		while ((nextLine = this.readNext()) != null) {
 			if (nextLine[2].equals("gene")) {
 				return nextGene;
 			} else {
 				nextGene.addFeature(nextLine);
-//				nextGeneArray.add(nextLine);
 			}
 		}		
 		atEndOfFile = true;

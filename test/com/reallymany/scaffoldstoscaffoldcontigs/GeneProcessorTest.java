@@ -120,7 +120,6 @@ public class GeneProcessorTest {
 		testScaffoldContig = testScaffolds.get(1).getScaffoldContigs().get(1);
 		testGene2 = testGP.scaffoldToScaffoldContig(testGene2, testScaffoldContig);
 		assertEquals("sctg_0002_0002", testGene2.getFeatures().get(0)[0]);
-		assertEquals("791", testGene2.getFeatures().get(2)[3]);
 	}
 	
 	@Test

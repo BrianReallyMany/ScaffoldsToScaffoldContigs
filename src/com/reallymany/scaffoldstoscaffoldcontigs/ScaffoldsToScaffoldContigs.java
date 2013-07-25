@@ -1,5 +1,7 @@
 package com.reallymany.scaffoldstoscaffoldcontigs;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ScaffoldsToScaffoldContigs {
@@ -20,17 +22,52 @@ public class ScaffoldsToScaffoldContigs {
 			System.out.println("Output file: "+args[2]);
 			
 			AGPReader sr = new AGPReader();
-			GFFReaderWriter gffRW;
 			ArrayList<Scaffold> scaffolds;
+			Gene currentGene;
+			ArrayList<Gene> currentGeneList;
+			GeneProcessor gp = null;
+			GFFReader reader = null;
+			GFFWriter writer = null;
 			
 			scaffolds = sr.readScaffoldFile(args[0]);
-			gffRW = new GFFReaderWriter(args[1], args[2], scaffolds);
-
-			gffRW.processInput();			
+			
+			try {
+				reader = new GFFReader(args[1]);
+				writer = new GFFWriter(args[2]);
+				gp = new GeneProcessor(scaffolds);
+			} catch (FileNotFoundException e) {
+				System.out.println("Error, could not find file "+args[1]);
+				e.printStackTrace();
+				return;
+			} catch (IOException e) {
+				System.out.println("I/O error involving the mysterious file "+args[2]);
+				e.printStackTrace();
+			} catch (ScaffoldContigException e) {
+				System.err.println("Problem initializing Gene Processor.");
+				e.printStackTrace();
+			}
+			
+			try {
+				while (!reader.getAtEndOfFile()) {
+					currentGene = reader.readOneGene();
+					System.out.println(currentGene.getFeatures().get(0)[0]);
+					currentGeneList = gp.prepareGeneForWriting(currentGene);
+					System.out.println(currentGeneList.size());
+					System.out.println("first item in currentGeneList ..." + currentGeneList.get(0).getFeatures().get(0)[0]);
+					writer.writeGenes(currentGeneList);
+				}
+				reader.close();
+				writer.close();
+			} catch (IOException e) {
+				System.err.println("I/O exception.");
+				e.printStackTrace();
+			} catch (ScaffoldContigException e) {
+				System.err.println("Problem with GeneProcessor; that's all I know.");
+				e.printStackTrace();
+			}			
 		}
 	}
 }
 
-// TODO where does the Name=... field get updated? in Gene.split()?
-// TODO write GFFWriter (constructor takes filename, method writeGenes takes ArrayList<Gene>)
-// TODO consider using TreeSet for Scaffold.scaffoldContigs ?
+// TODO ooops! puts ".1" or ".2" on everything, not just those that are split.
+// TODO sctg not getting written, wtf?

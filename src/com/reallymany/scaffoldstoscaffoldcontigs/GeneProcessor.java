@@ -25,21 +25,7 @@ public class GeneProcessor {
 		throw new ScaffoldContigException("no such scaffold @ GeneProcessor.findCurrentScaffold()");
 	}
 
-	public int findGeneStartingIndex(Gene gene) {
-		return Integer.parseInt(gene.getFeatures().get(0)[3]);
-	}
 	
-	public int findGeneEndingIndex(Gene gene) {
-		return Integer.parseInt(gene.getFeatures().get(0)[4]);
-	}
-	
-	public int findFeatureStartingIndex(String[] feature) {
-		return Integer.parseInt(feature[3]);
-	}
-	
-	public int findFeatureEndingIndex(String[] feature) {
-		return Integer.parseInt(feature[4]);
-	}
 
 	public boolean spansMultipleContigs(Gene gene, Scaffold scaffold) throws ScaffoldContigException {
 		int startIndex = findGeneStartingIndex(gene);
@@ -57,7 +43,6 @@ public class GeneProcessor {
 		while (featuresIterator.hasNext()) {
 			currentFeature = featuresIterator.next();
 			currentFeature[0] = sctgName;
-			recalculateIndices(currentFeature, sctg);
 		}
 		return gene;
 	}
@@ -77,12 +62,15 @@ public class GeneProcessor {
 		Gene currentGene;
 		ArrayList<Gene> splitUpGenes = new ArrayList<Gene>();
 		ScaffoldContig currentSctg = scaffold.getScaffoldContig(findGeneStartingIndex(gene));
+		Boolean spansMultipleContigs = !geneEndsOnThisSctg(gene, currentSctg);
 		
 		while (!reachedLastSctg) {
 			currentGene = new Gene(gene);
 			adjustIndices(currentGene, currentSctg);			
-			appendSubtype(currentGeneIndex, currentGene);			
-			splitUpGenes.add(currentGene);			
+			if (spansMultipleContigs) {
+				appendSubtype(currentGeneIndex, currentGene);			
+			}
+			splitUpGenes.add(scaffoldToScaffoldContig(currentGene, currentSctg));			
 			if (geneEndsOnThisSctg(gene, currentSctg)) {				
 				reachedLastSctg = true;
 			} else {				
@@ -139,6 +127,21 @@ public class GeneProcessor {
 		}		
 	}
 
+	public int findGeneStartingIndex(Gene gene) {
+		return Integer.parseInt(gene.getFeatures().get(0)[3]);
+	}
+	
+	public int findGeneEndingIndex(Gene gene) {
+		return Integer.parseInt(gene.getFeatures().get(0)[4]);
+	}
+	
+	public int findFeatureStartingIndex(String[] feature) {
+		return Integer.parseInt(feature[3]);
+	}
+	
+	public int findFeatureEndingIndex(String[] feature) {
+		return Integer.parseInt(feature[4]);
+	}
 
 	// NOTE technically only checks that gene ends BEFORE the end of this Sctg...
 	public boolean geneEndsOnThisSctg(Gene gene, ScaffoldContig currentSctg) {

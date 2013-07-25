@@ -1,0 +1,15 @@
+foo	bar
+sctg_0001_0001	maker	gene	5	4968	.	+	.	ID=1.1;Name=BDOR_007864.1
+sctg_0001_0001	maker	mRNA	5	4968	.	+	.	ID=2.1;Name=BDOR_007864-RA.1;Parent=1.1
+sctg_0001_0001	maker	exon	5	4000	.	+	.	ID=3.1;Name=BDOR_007864-RA.1;Parent=2.1
+foo	bar
+sctg_0001_0002	maker	gene	6318	6683	.	+	.	ID=1.2;Name=BDOR_007864.2
+sctg_0001_0002	maker	mRNA	6318	6683	.	+	.	ID=2.2;Name=BDOR_007864-RA.2;Parent=1.2
+sctg_0001_0002	maker	exon	183	5683	.	+	.	ID=4.2;Name=BDOR_007864-RA.2;Parent=2.2
+foo	bar
+foo	bar
+sctg_0002_0002	maker	gene	11	5791	.	+	.	ID=5;Name=BDOR_007864
+sctg_0002_0002	maker	mRNA	11	5791	.	+	.	ID=6;Name=BDOR_007864-RA;Parent=1
+sctg_0002_0002	maker	exon	791	3791	.	+	.	ID=7;Name=BDOR_007864-RA;Parent=2
+sctg_0002_0002	maker	CDS	791	3791	.	+	.	ID=8;Name=BDOR_007864-RA;Parent=2
+foo	bar
