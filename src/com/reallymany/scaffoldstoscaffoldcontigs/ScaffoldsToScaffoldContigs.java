@@ -66,5 +66,7 @@ public class ScaffoldsToScaffoldContigs {
 	}
 }
 
-// TODO ooops! puts ".1" or ".2" on everything, not just those that are split.
-// TODO sctg not getting written, wtf?
+// TODO when encounter a gene that extends beyond the edge of a contig, trim the gene (change the relevant indices)
+// TODO do the same with mRNA
+// TODO *maybe* do the same with other features, or maybe constrain them to having a length%3=0
+// TODO raise a flag when a non-gene/mRNA feature actually spans two or more contigs
