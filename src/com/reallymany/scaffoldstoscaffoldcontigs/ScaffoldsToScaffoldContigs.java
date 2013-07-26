@@ -19,7 +19,7 @@ public class ScaffoldsToScaffoldContigs {
 			
 			System.out.println("Using agp file: "+args[0]);
 			System.out.println("Rewriting gff file: "+args[1]);
-			System.out.println("Output file: "+args[2]);
+			System.out.println("Output file: "+args[2]+".gff");
 			
 			AGPReader sr = new AGPReader();
 			ArrayList<Scaffold> scaffolds;
@@ -50,10 +50,7 @@ public class ScaffoldsToScaffoldContigs {
 			try {
 				while (!reader.getAtEndOfFile()) {
 					currentGene = reader.readOneGene();
-					System.out.println(currentGene.getFeatures().get(0)[0]);
 					currentGeneList = gp.prepareGeneForWriting(currentGene);
-					System.out.println(currentGeneList.size());
-					System.out.println("first item in currentGeneList ..." + currentGeneList.get(0).getFeatures().get(0)[0]);
 					writer.writeGenes(currentGeneList);
 				}
 				reader.close();

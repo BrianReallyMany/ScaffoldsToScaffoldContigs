@@ -13,16 +13,11 @@ public class GFFWriter extends CSVWriter {
 		super(new FileWriter(filename+".gff"), '\t', CSVWriter.NO_QUOTE_CHARACTER);
 	}
 
-	public void writeGenes(ArrayList<Gene> listOfGenes) {
-		System.out.println("you rang?");
-		String[] bar = {"foo", "bar"};
-		this.writeNext(bar);
+	public void writeGenes(ArrayList<Gene> listOfGenes) {		
 		Iterator<Gene> geneIterator = listOfGenes.iterator();
 		while (geneIterator.hasNext()) {
 			Gene currentGene = geneIterator.next();
 			this.writeAll(currentGene.getFeatures());	
-			String[] foo = {"foo", "bar"};
-			this.writeNext(foo);
 		}		
 	}	
 }

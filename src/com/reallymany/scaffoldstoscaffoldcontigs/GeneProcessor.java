@@ -61,7 +61,13 @@ public class GeneProcessor {
 		int currentGeneIndex = 1;
 		Gene currentGene;
 		ArrayList<Gene> splitUpGenes = new ArrayList<Gene>();
-		ScaffoldContig currentSctg = scaffold.getScaffoldContig(findGeneStartingIndex(gene));
+		ScaffoldContig currentSctg;
+		try {
+			currentSctg = scaffold.getScaffoldContig(findGeneStartingIndex(gene));
+		} catch (ScaffoldContigException e) {
+			e.printStackTrace();
+			return splitUpGenes;
+		}
 		Boolean spansMultipleContigs = !geneEndsOnThisSctg(gene, currentSctg);
 		
 		while (!reachedLastSctg) {

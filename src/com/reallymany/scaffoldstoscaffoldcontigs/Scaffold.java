@@ -36,7 +36,8 @@ public class Scaffold {
 				return currentSctg;
 			}
 		}	
-		throw new ScaffoldContigException("Correct ScaffoldContig not found");
+		throw new ScaffoldContigException("Correct ScaffoldContig not found; " +
+					this.getName()+ " and index "+index);
 	}
 
 	public ScaffoldContig getNextScaffoldContig(ScaffoldContig sctg) throws ScaffoldContigException {
