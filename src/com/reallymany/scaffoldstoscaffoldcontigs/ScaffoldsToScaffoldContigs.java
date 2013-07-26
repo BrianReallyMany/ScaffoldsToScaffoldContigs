@@ -68,5 +68,6 @@ public class ScaffoldsToScaffoldContigs {
 
 // TODO when encounter a gene that extends beyond the edge of a contig, trim the gene (change the relevant indices)
 // TODO do the same with mRNA
-// TODO *maybe* do the same with other features, or maybe constrain them to having a length%3=0
+// TODO this kind of sucks -- trim all you like but IF trim CDS AND trimming begin THEN update index according to how many bases 
+// you trimmed. and there are only 3 such CDSs... shibar...
 // TODO raise a flag when a non-gene/mRNA feature actually spans two or more contigs
