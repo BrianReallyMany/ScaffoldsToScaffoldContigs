@@ -129,7 +129,7 @@ public class GeneProcessorTest {
 		assertTrue(splitUpGenes instanceof ArrayList);
 		assertEquals("ID=1.1;Name=BDOR_007864.1", splitUpGenes.get(0).getFeatures().get(0)[8]);
 		assertEquals("ID=1.2;Name=BDOR_007864.2", splitUpGenes.get(1).getFeatures().get(0)[8]);
-		assertEquals("ID=2.2;Name=BDOR_007864-RA.2;Parent=1.2", splitUpGenes.get(1).getFeatures().get(1)[8]);
+		assertEquals("ID=2.2;Name=BDOR_007864.2-RA;Parent=1.2", splitUpGenes.get(1).getFeatures().get(1)[8]);
 		assertEquals(3, splitUpGenes.get(0).getFeatures().size());
 		assertEquals(3, splitUpGenes.get(1).getFeatures().size());
 		assertEquals("gene", splitUpGenes.get(0).getFeatures().get(0)[2]);
@@ -164,6 +164,9 @@ public class GeneProcessorTest {
 		String input = "ID=1;Name=BDOR_007864";
 		String expectedOutput = "ID=1.1;Name=BDOR_007864.1";
 		assertEquals(expectedOutput, testGP.appendSubtype(1, input));
+		String input2 = "ID=204918;Name=BDOR_000911-RA:exon:506;Parent=204917";
+		String expectedOutput2 = "ID=204918.4;Name=BDOR_000911.4-RA:exon:506;Parent=204917.4";
+		assertEquals(expectedOutput2, testGP.appendSubtype(4, input2));
 	}
 }
 

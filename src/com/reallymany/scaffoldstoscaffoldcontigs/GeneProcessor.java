@@ -62,7 +62,42 @@ public class GeneProcessor {
 		return (findGeneEndingIndex(gene) <= currentSctg.getEnd());
 	}
 	
-
+	// This function also takes care of removing features not located on current sctg
+	public void adjustIndices(Gene gene, ScaffoldContig sctg) {
+		int sctgBegin = sctg.getBegin();
+		int sctgEnd = sctg.getEnd();
+		int featureBegin, featureEnd;
+		String[] currentFeature;
+		Iterator<String[]> featureIterator = gene.getFeatures().iterator();
+		while (featureIterator.hasNext()) {
+			currentFeature = featureIterator.next();
+			featureBegin = Integer.parseInt(currentFeature[3]);
+			featureEnd = Integer.parseInt(currentFeature[4]);
+			if ((featureEnd < sctgBegin) || (featureBegin > sctgEnd)) {
+				// Feature is not located on this ScaffoldContig at all
+				featureIterator.remove();
+			} else {
+				if (featureBegin < sctgBegin) {
+					System.err.println("Current feature ("+currentFeature[0]+" -- "+
+							currentFeature[2]+ " -- startIndex "+
+							currentFeature[3]+ ") starts before beginning of contig. Changing startIndex " +
+							currentFeature[3]+ " to "+ sctgBegin);
+					currentFeature[3] = Integer.toString(sctgBegin);
+				} else {					
+					currentFeature[3] = Integer.toString(featureBegin - sctgBegin + 1);
+				}
+				if (featureEnd > sctgEnd) {
+					System.err.println("Current feature ("+currentFeature[0]+" -- "+
+							currentFeature[2]+ " -- endIndex " +
+							currentFeature[4] + ") extends beyond end of contig. Changing endIndex " +
+							currentFeature[4]+ " to "+ sctgEnd);
+					currentFeature[4] = Integer.toString(sctgEnd);
+				} else {
+					currentFeature[4] = Integer.toString(featureEnd - sctgBegin + 1);
+				}
+			}
+		}		
+	}
 
 	public Gene scaffoldToScaffoldContig(Gene gene,
 			ScaffoldContig sctg) {
@@ -97,40 +132,19 @@ public class GeneProcessor {
 		String addOn = "." + Integer.toString(currentGeneIndex);
 		String[] lastColumn = string.split(";");
 		for (int n=0; n < lastColumn.length; n++) {
-			lastColumn[n] = lastColumn[n].concat(addOn);
+			if (n==1) {	// The "Name=" field; a special case
+				String[] nameField = lastColumn[n].split("-");
+				nameField[0] = nameField[0].concat(addOn);
+				lastColumn[n] = StringUtils.join(nameField, '-');
+			} else {
+				lastColumn[n] = lastColumn[n].concat(addOn);
+			}
 		}
 		output = StringUtils.join(lastColumn, ';');
 		return output;
 	}
 
-	// This function also takes care of removing features not located on current sctg
-	public void adjustIndices(Gene gene, ScaffoldContig sctg) {
-		int sctgBegin = sctg.getBegin();
-		int sctgEnd = sctg.getEnd();
-		int featureBegin, featureEnd;
-		String[] currentFeature;
-		Iterator<String[]> featureIterator = gene.getFeatures().iterator();
-		while (featureIterator.hasNext()) {
-			currentFeature = featureIterator.next();
-			featureBegin = Integer.parseInt(currentFeature[3]);
-			featureEnd = Integer.parseInt(currentFeature[4]);
-			if ((featureEnd < sctgBegin) || (featureBegin > sctgEnd)) {
-				// Feature is not located on this ScaffoldContig at all
-				featureIterator.remove();
-			} else {
-				if (featureBegin < sctgBegin) {
-					currentFeature[3] = Integer.toString(sctgBegin);
-				} else {					
-					currentFeature[3] = Integer.toString(featureBegin - sctgBegin + 1);
-				}
-				if (featureEnd > sctgEnd) {
-					currentFeature[4] = Integer.toString(sctgEnd);
-				} else {
-					currentFeature[4] = Integer.toString(featureEnd - sctgBegin + 1);
-				}
-			}
-		}		
-	}
+	
 
 	public int findGeneStartingIndex(Gene gene) {
 		return Integer.parseInt(gene.getFeatures().get(0)[3]);
