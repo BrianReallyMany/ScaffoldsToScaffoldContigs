@@ -17,6 +17,7 @@ public class ScaffoldsToScaffoldContigs {
 				return;				
 			}
 			
+			System.out.println("GFF file verified ...");
 			System.out.println("Using agp file: "+args[0]);
 			System.out.println("Rewriting gff file: "+args[1]);
 			System.out.println("Output file: "+args[2]+".gff");

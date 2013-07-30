@@ -72,14 +72,6 @@ public class GeneProcessorTest {
 		assertEquals(testScaffolds.get(1).getName(), testGP.findScaffold(testGene2).getName());
 	}
 	
-	@Test
-	public void testSpansMultipleContigs() throws Exception {
-		setUp();
-		testScaffold = testGP.findScaffold(testGene1);
-		assertTrue(testGP.spansMultipleContigs(testGene1, testScaffold));
-		testScaffold = testGP.findScaffold(testGene2);
-		assertFalse(testGP.spansMultipleContigs(testGene2, testScaffold));
-	}
 	
 	@Test
 	public void testFindGeneStartingIndex() throws Exception {

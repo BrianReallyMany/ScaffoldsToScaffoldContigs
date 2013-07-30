@@ -13,48 +13,6 @@ public class GeneProcessor {
 		allScaffolds = scaffolds;	
 	}	
 	
-	public Scaffold findScaffold(Gene gene) throws ScaffoldContigException {
-		String scaffoldName = gene.getFeatures().get(0)[0];
-		Iterator<Scaffold> scaffoldsIterator = allScaffolds.iterator();
-		while (scaffoldsIterator.hasNext()) {
-			Scaffold thisScaffold = scaffoldsIterator.next();
-				if (thisScaffold.getName().equals(scaffoldName)) {
-					return thisScaffold;
-			}
-		}
-		throw new ScaffoldContigException("no such scaffold @ GeneProcessor.findCurrentScaffold()");
-	}
-
-	
-
-	public boolean spansMultipleContigs(Gene gene, Scaffold scaffold) throws ScaffoldContigException {
-		int startIndex = findGeneStartingIndex(gene);
-		int endIndex = findGeneEndingIndex(gene);
-		ScaffoldContig startSctg = scaffold.getScaffoldContig(startIndex);
-		ScaffoldContig endSctg = scaffold.getScaffoldContig(endIndex);
-		return !(startSctg.equals(endSctg));		
-	}
-
-	public Gene scaffoldToScaffoldContig(Gene gene,
-			ScaffoldContig sctg) {
-		String[] currentFeature;
-		String sctgName = sctg.getName();
-		Iterator<String[]> featuresIterator = gene.getFeatures().iterator();
-		while (featuresIterator.hasNext()) {
-			currentFeature = featuresIterator.next();
-			currentFeature[0] = sctgName;
-		}
-		return gene;
-	}
-
-	public void recalculateIndices(String[] feature,
-			ScaffoldContig sctg) {
-		int newBegin = Integer.parseInt(feature[3]) - sctg.getBegin() + 1;
-		int newEnd = Integer.parseInt(feature[4]) - sctg.getBegin() + 1;
-		feature[3] = Integer.toString(newBegin);
-		feature[4] = Integer.toString(newEnd);
-	}
-	
 	public ArrayList<Gene> prepareGeneForWriting(Gene gene) throws ScaffoldContigException {
 		Scaffold scaffold = findScaffold(gene);
 		Boolean reachedLastSctg = false;
@@ -86,6 +44,47 @@ public class GeneProcessor {
 		}		
 		return splitUpGenes;
 	}
+	
+	public Scaffold findScaffold(Gene gene) throws ScaffoldContigException {
+		String scaffoldName = gene.getFeatures().get(0)[0];
+		Iterator<Scaffold> scaffoldsIterator = allScaffolds.iterator();
+		while (scaffoldsIterator.hasNext()) {
+			Scaffold thisScaffold = scaffoldsIterator.next();
+				if (thisScaffold.getName().equals(scaffoldName)) {
+					return thisScaffold;
+			}
+		}
+		throw new ScaffoldContigException("no such scaffold @ GeneProcessor.findCurrentScaffold()");
+	}
+
+	// NOTE technically only checks that gene ends BEFORE the end of this Sctg...
+	public boolean geneEndsOnThisSctg(Gene gene, ScaffoldContig currentSctg) {
+		return (findGeneEndingIndex(gene) <= currentSctg.getEnd());
+	}
+	
+
+
+	public Gene scaffoldToScaffoldContig(Gene gene,
+			ScaffoldContig sctg) {
+		String[] currentFeature;
+		String sctgName = sctg.getName();
+		Iterator<String[]> featuresIterator = gene.getFeatures().iterator();
+		while (featuresIterator.hasNext()) {
+			currentFeature = featuresIterator.next();
+			currentFeature[0] = sctgName;
+		}
+		return gene;
+	}
+
+	public void recalculateIndices(String[] feature,
+			ScaffoldContig sctg) {
+		int newBegin = Integer.parseInt(feature[3]) - sctg.getBegin() + 1;
+		int newEnd = Integer.parseInt(feature[4]) - sctg.getBegin() + 1;
+		feature[3] = Integer.toString(newBegin);
+		feature[4] = Integer.toString(newEnd);
+	}
+	
+	
 
 	private void appendSubtype(int currentGeneIndex, Gene gene) {
 		for (String[] feature : gene.getFeatures()) {
@@ -149,8 +148,5 @@ public class GeneProcessor {
 		return Integer.parseInt(feature[4]);
 	}
 
-	// NOTE technically only checks that gene ends BEFORE the end of this Sctg...
-	public boolean geneEndsOnThisSctg(Gene gene, ScaffoldContig currentSctg) {
-		return (findGeneEndingIndex(gene) <= currentSctg.getEnd());
-	}
+	
 }
