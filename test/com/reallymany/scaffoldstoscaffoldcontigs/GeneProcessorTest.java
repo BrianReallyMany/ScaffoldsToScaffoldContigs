@@ -141,16 +141,16 @@ public class GeneProcessorTest {
 		assertEquals("exon", splitUpGenes.get(1).getFeatures().get(2)[2]);
 	}	
 	
-//	@Test
-//	public void testAdjustIndices() throws Exception {
-//		setUp();
-//		testScaffoldContig = testScaffolds.get(1).getScaffoldContigs().get(1);
-//		testGP.adjustIndices(testGene2, testScaffoldContig);
-//		assertEquals("11", testGene2.getFeatures().get(0)[3]);
-//		assertEquals("791", testGene2.getFeatures().get(3)[3]);
-//		assertEquals("5791", testGene2.getFeatures().get(0)[4]);
-//		assertEquals("3791", testGene2.getFeatures().get(2)[4]);
-//	}
+	@Test
+	public void testAdjustIndices() throws Exception {
+		setUp();
+		testScaffoldContig = testScaffolds.get(1).getScaffoldContigs().get(1);
+		testGP.adjustIndices(testGene2, testScaffoldContig);
+		assertEquals("11", testGene2.getFeatures().get(0)[3]);
+		assertEquals("791", testGene2.getFeatures().get(3)[3]);
+		assertEquals("5791", testGene2.getFeatures().get(0)[4]);
+		assertEquals("3791", testGene2.getFeatures().get(2)[4]);
+	}
 	
 	@Test
 	public void testGeneEndsOnThisSctg() throws Exception {
@@ -168,8 +168,12 @@ public class GeneProcessorTest {
 		String expectedOutput2 = "ID=204918.4;Name=BDOR_000911.4-RA:exon:506;Parent=204917.4";
 		assertEquals(expectedOutput2, testGP.appendSubtype(4, input2));
 	}
+	
+	@Test
+	public void testRecalculateFrame() throws Exception {
+		setUp();
+		assertEquals(2, testGP.recalculateFrame(1, 191, 189));
+		assertEquals(0, testGP.recalculateFrame(1, 191, 187));
+		assertEquals(0, testGP.recalculateFrame(1, 2010, 2020));
+	}
 }
-
-
-// TODO seems like features are not getting deleted
-// TODO 'gene' feature not making it to output guys.

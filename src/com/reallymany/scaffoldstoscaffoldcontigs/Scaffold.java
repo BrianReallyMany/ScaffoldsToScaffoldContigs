@@ -37,7 +37,7 @@ public class Scaffold {
 			}
 		}	
 		throw new ScaffoldContigException("Correct ScaffoldContig not found; " +
-					this.getName()+ " and index "+index);
+					this.getName()+ " and index "+index + "; discarding Gene");
 	}
 
 	public ScaffoldContig getNextScaffoldContig(ScaffoldContig sctg) throws ScaffoldContigException {

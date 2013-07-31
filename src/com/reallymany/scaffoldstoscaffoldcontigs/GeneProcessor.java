@@ -23,7 +23,7 @@ public class GeneProcessor {
 		try {
 			currentSctg = scaffold.getScaffoldContig(findGeneStartingIndex(gene));
 		} catch (ScaffoldContigException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			return splitUpGenes;
 		}
 		Boolean spansMultipleContigs = !geneEndsOnThisSctg(gene, currentSctg);
@@ -83,6 +83,14 @@ public class GeneProcessor {
 							currentFeature[3]+ ") starts before beginning of contig. Changing startIndex " +
 							currentFeature[3]+ " to "+ sctgBegin);
 					currentFeature[3] = Integer.toString(sctgBegin);
+					if (currentFeature[2].equals("CDS")) {
+						// Update Frame column for CDS features only
+						int oldFrameValue = Integer.parseInt(currentFeature[7]);
+						int newFrameValue = recalculateFrame(oldFrameValue, featureBegin, sctgBegin);
+						currentFeature[7] = Integer.toString(newFrameValue);
+						System.out.println("found a CDS! "+currentFeature[2]);
+						System.out.println("changing old frame="+currentFeature[7]+" to "+newFrameValue);
+					}
 				} else {					
 					currentFeature[3] = Integer.toString(featureBegin - sctgBegin + 1);
 				}
@@ -92,6 +100,12 @@ public class GeneProcessor {
 							currentFeature[4] + ") extends beyond end of contig. Changing endIndex " +
 							currentFeature[4]+ " to "+ sctgEnd);
 					currentFeature[4] = Integer.toString(sctgEnd);
+					if (currentFeature[2].equals("CDS")) {
+						// Update Frame column for CDS features only
+						int oldFrameValue = Integer.parseInt(currentFeature[7]);
+						int newFrameValue = recalculateFrame(oldFrameValue, featureEnd, sctgEnd);
+						currentFeature[7] = Integer.toString(newFrameValue);
+					}
 				} else {
 					currentFeature[4] = Integer.toString(featureEnd - sctgBegin + 1);
 				}
@@ -160,6 +174,12 @@ public class GeneProcessor {
 	
 	public int findFeatureEndingIndex(String[] feature) {
 		return Integer.parseInt(feature[4]);
+	}
+
+	public int recalculateFrame(int originalFrameValue, int originalIndex, int newIndex) {
+		int newFrameValue = originalFrameValue - (Math.abs(originalIndex - newIndex));
+		// int answer = ((number % mod) + mod) % mod;
+		return ((newFrameValue % 3) + 3) % 3;
 	}
 
 	
