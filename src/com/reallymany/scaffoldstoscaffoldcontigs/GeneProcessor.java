@@ -81,30 +81,33 @@ public class GeneProcessor {
 					System.err.println("Current feature ("+currentFeature[0]+" -- "+
 							currentFeature[2]+ " -- startIndex "+
 							currentFeature[3]+ ") starts before beginning of contig. Changing startIndex " +
-							currentFeature[3]+ " to "+ sctgBegin);
-					currentFeature[3] = Integer.toString(sctgBegin);
-					if (currentFeature[2].equals("CDS")) {
-						// Update Frame column for CDS features only
+							currentFeature[3]+ " to 1");
+					currentFeature[3] = "1";
+					if (currentFeature[2].equals("CDS") && currentFeature[6].equals("+")) {
+						// Update Frame column for positive-oriented CDS features only
 						int oldFrameValue = Integer.parseInt(currentFeature[7]);
 						int newFrameValue = recalculateFrame(oldFrameValue, featureBegin, sctgBegin);
 						currentFeature[7] = Integer.toString(newFrameValue);
 						System.out.println("found a CDS! "+currentFeature[2]);
-						System.out.println("changing old frame="+currentFeature[7]+" to "+newFrameValue);
+						System.out.println("changing old frame="+oldFrameValue+" to "+newFrameValue);
 					}
 				} else {					
 					currentFeature[3] = Integer.toString(featureBegin - sctgBegin + 1);
 				}
 				if (featureEnd > sctgEnd) {
+					int newEnd = sctgEnd - sctgBegin + 1;
 					System.err.println("Current feature ("+currentFeature[0]+" -- "+
 							currentFeature[2]+ " -- endIndex " +
 							currentFeature[4] + ") extends beyond end of contig. Changing endIndex " +
-							currentFeature[4]+ " to "+ sctgEnd);
-					currentFeature[4] = Integer.toString(sctgEnd);
-					if (currentFeature[2].equals("CDS")) {
-						// Update Frame column for CDS features only
+							currentFeature[4]+ " to " + newEnd);
+					currentFeature[4] = Integer.toString(newEnd);
+					if (currentFeature[2].equals("CDS") && currentFeature[6].equals("-")) {
+						// Update Frame column for negative-oriented CDS features only
 						int oldFrameValue = Integer.parseInt(currentFeature[7]);
 						int newFrameValue = recalculateFrame(oldFrameValue, featureEnd, sctgEnd);
 						currentFeature[7] = Integer.toString(newFrameValue);
+						System.out.println("found a CDS! "+currentFeature[2]);
+						System.out.println("changing old frame="+oldFrameValue+" to "+newFrameValue);
 					}
 				} else {
 					currentFeature[4] = Integer.toString(featureEnd - sctgBegin + 1);
